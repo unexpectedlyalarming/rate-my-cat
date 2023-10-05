@@ -65,6 +65,12 @@ router.post("/", verifyToken, async (req, res) => {
     const rating = req.body.rating;
     const comment = req.body.comment;
 
+    if (rating < 1 || rating > 10) {
+      return res
+        .status(400)
+        .json({ message: "Rating must be between 1 and 10" });
+    }
+
     const newRating = new rating({
       userId: userId,
       catId: catId,
