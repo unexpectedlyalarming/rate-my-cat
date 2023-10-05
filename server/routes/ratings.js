@@ -110,4 +110,22 @@ router.patch("/:ratingId", verifyToken, async (req, res) => {
   }
 });
 
+//Delete rating
+
+router.delete("/:ratingId", verifyToken, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const ratingId = req.params.ratingId;
+    const rating = await rating.findById(ratingId);
+    //Check if ratingId is owned by userid
+    if (rating.userId !== userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    await rating.remove();
+    res.status(200).json({ message: "Rating deleted" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 module.exports = router;
