@@ -24,13 +24,13 @@ async function verifyToken(req, res, next) {
     if (verified) {
       //If token is about to expire, reissue token
       if (verified.exp - Date.now() / 1000 < 60 * 5) {
-        const token = await giveToken(verified.user);
+        const token = await giveToken(verified);
         res.cookie("accessToken", token, {
           httpOnly: true,
           maxAge: 1000 * 60 * 30,
         });
-        next();
       }
+      req.user = user.findOne({ username: verified.username });
       next();
     } else {
       return res.status(401).json({ message: "Unauthorized" });

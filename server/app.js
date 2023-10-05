@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const session = require("express-session");
 const bcryptjs = require("bcryptjs");
-const { verify } = require("jsonwebtoken");
 const verifyToken = require("./routes/auth");
 //Log incoming requests
 
@@ -55,7 +54,7 @@ app.use("/ratings", require("./routes/ratings"));
 
 //Profile routes
 
-app.use("/profile", require("./routes/profile"));
+app.use("/users", require("./routes/users"));
 
 //Cat routes
 
@@ -66,6 +65,6 @@ app.use("/cats", require("./routes/cats"));
 app.use("/leaderboard", require("./routes/leaderboard"));
 
 //Start the server
-app.listen(5000, () => {
+app.listen(4005, () => {
   console.log("Server has started");
 });
