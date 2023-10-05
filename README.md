@@ -3,7 +3,7 @@ The all new site to rate your cats best photos
 
 # Features
 
-Rate my cat is a social media where users can create profiles for each of their cats. Cats can have photos posted, and users can review the cats. The cats with the most votes show up on leaderboards
+Rate my cat is a social media site where users can create profiles for each of their cats. Cats can have photos posted, and users can review the cats. The cats with the most votes show up on leaderboards
 
 Some features (planned and implemented at the moment) include:
 - Detailed voting and review system
