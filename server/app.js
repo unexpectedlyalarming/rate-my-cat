@@ -42,8 +42,6 @@ app.use(
 
 app.use("/auth", require("./routes/auth"));
 
-app.use(verifyToken);
-
 //Post routes
 
 app.use("/posts", require("./routes/posts"));

@@ -1,4 +1,5 @@
 //Cat schema. Includes information like name, breed, color, age, reference to users, and image.
+const mongoose = require("mongoose");
 
 const catSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -10,3 +11,5 @@ const catSchema = new mongoose.Schema({
 });
 
 const Cat = mongoose.model("Cat", catSchema);
+
+module.exports = Cat;

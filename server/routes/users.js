@@ -4,7 +4,7 @@ const router = express.Router();
 const cat = require("../models/Cat");
 const user = require("../models/User");
 const verifyToken = require("./auth");
-const review = require("../models/Review");
+const review = require("../models/Rating");
 
 //Get all users
 
