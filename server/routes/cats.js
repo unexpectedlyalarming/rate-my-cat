@@ -1,17 +1,17 @@
 //All profiles can create cats, which are essentially profiles for each cat that they post
 const express = require("express");
 const router = express.Router();
-const cat = require("../models/Cat");
-const user = require("../models/User");
+const Cat = require("../models/Cat");
+const User = require("../models/User");
 const verifyToken = require("./auth");
-const review = require("../models/Rating");
+const Review = require("../models/Rating");
 const post = require("../models/Post");
 
 //Get all cats
 
 router.get("/", async (req, res) => {
   try {
-    const cats = await cat.find();
+    const cats = await Cat.find();
     res.status(200).json(cats);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -22,7 +22,7 @@ router.get("/", async (req, res) => {
 
 router.get("/user/:userId", async (req, res) => {
   try {
-    const cats = await cat.find({ userId: req.params.userId });
+    const cats = await Cat.find({ userId: req.params.userId });
     res.status(200).json(cats);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -33,7 +33,7 @@ router.get("/user/:userId", async (req, res) => {
 
 router.get("/:catId", async (req, res) => {
   try {
-    const cats = await cat.findById(req.params.catId);
+    const cats = await Cat.findById(req.params.catId);
 
     res.status(200).json(cats);
   } catch (err) {
@@ -46,7 +46,7 @@ router.get("/:catId", async (req, res) => {
 router.post("/", verifyToken, async (req, res) => {
   try {
     const userId = req.user.id;
-    const newCat = new cat({
+    const newCat = new Cat({
       name: req.body.name,
       breed: req.body.breed,
       age: req.body.age,
@@ -68,7 +68,7 @@ router.patch("/:catId", verifyToken, async (req, res) => {
     const userId = req.user.id;
     const catId = req.params.catId;
     //Check if catId is owned by userid
-    const currentCat = await cat.findById(catId);
+    const currentCat = await Cat.findById(catId);
     if (currentCat.userId !== userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -91,12 +91,12 @@ router.delete("/:catId", verifyToken, async (req, res) => {
     const userId = req.user.id;
     const catId = req.params.catId;
     //Check if catId is owned by userid
-    const currentCat = await cat.findById(catId);
+    const currentCat = await Cat.findById(catId);
     if (currentCat.userId !== userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
     //Delete all reviews associated with cat
-    const reviews = await review.find({ catId: catId });
+    const reviews = await Review.find({ catId: catId });
     reviews.forEach(async (review) => {
       await review.delete();
     });

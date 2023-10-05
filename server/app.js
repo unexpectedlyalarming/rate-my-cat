@@ -6,7 +6,9 @@ const cors = require("cors");
 const session = require("express-session");
 const bcryptjs = require("bcryptjs");
 const verifyToken = require("./routes/auth");
-//Log incoming requests
+const morgan = require("morgan");
+
+app.use(morgan("tiny"));
 
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);

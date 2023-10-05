@@ -1,15 +1,15 @@
 //All posts are associated with a cat
 const express = require("express");
 const router = express.Router();
-const post = require("../models/Post");
-const cat = require("../models/Cat");
-const user = require("../models/User");
+const Post = require("../models/Post");
+const Cat = require("../models/Cat");
+const User = require("../models/User");
 const verifyToken = require("./auth");
 
 //Get all posts
 router.get("/", async (req, res) => {
   try {
-    const posts = await post.find();
+    const posts = await Post.find();
     res.json(posts);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
 
 router.get("/cat/:catId", async (req, res) => {
   try {
-    const posts = await post.find({ catId: req.params.catId });
+    const posts = await Post.find({ catId: req.params.catId });
     res.json(posts);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -31,7 +31,7 @@ router.get("/cat/:catId", async (req, res) => {
 
 router.get("/user/:userId", async (req, res) => {
   try {
-    const posts = await post.find({ userId: req.params.userId });
+    const posts = await Post.find({ userId: req.params.userId });
     res.json(posts);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -42,7 +42,7 @@ router.get("/user/:userId", async (req, res) => {
 
 router.get("/:postId", async (req, res) => {
   try {
-    const posts = await post.findById(req.params.postId);
+    const posts = await Post.findById(req.params.postId);
     res.json(posts);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -54,17 +54,16 @@ router.get("/:postId", async (req, res) => {
 router.post("/", verifyToken, async (req, res) => {
   try {
     const userId = req.user.id;
-    console.log(userId);
     const catId = req.body.catId;
     //Check if catId is owned by userid
-    const currentCat = await cat.findById(catId);
+    const currentCat = await Cat.findById(catId);
     if (currentCat.userId !== userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
     const title = req.body.title;
     const description = req.body.description;
     const image = req.body.image;
-    const newPost = new post({
+    const newPost = new Post({
       userId: userId,
       catId: catId,
       title: title,
@@ -73,11 +72,11 @@ router.post("/", verifyToken, async (req, res) => {
     });
     const post = await newPost.save();
     //Add post to user's posts array
-    const user = await user.findById(userId);
+    const user = await User.findById(userId);
     user.posts.push(post._id);
     await user.save();
     //Add post to cat's posts array
-    const cat = await cat.findById(catId);
+    const cat = await Cat.findById(catId);
     cat.posts.push(post._id);
     await cat.save();
     res.status(200).json({ message: "Post created" });
@@ -93,7 +92,7 @@ router.delete("/:postId", verifyToken, async (req, res) => {
     const userId = req.user.id;
     const postId = req.params.postId;
     //Check if post exists
-    const currentPost = await post.findById(postId);
+    const currentPost = await Post.findById(postId);
     if (!currentPost) {
       return res.status(404).json({ message: "Post not found" });
     }
@@ -102,13 +101,13 @@ router.delete("/:postId", verifyToken, async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
     //Delete post
-    await post.findByIdAndDelete(postId);
+    await Post.findByIdAndDelete(postId);
     //Delete post from user's posts array
-    const user = await user.findById(userId);
+    const user = await User.findById(userId);
     user.posts = user.posts.filter((post) => post !== postId);
     await user.save();
     //Delete post from cat's posts array
-    const cat = await cat.findById(currentPost.catId);
+    const cat = await Cat.findById(currentPost.catId);
     cat.posts = cat.posts.filter((post) => post !== postId);
     await cat.save();
     res.status(200).json({ message: "Post deleted" });
@@ -127,7 +126,7 @@ router.patch("/:postId", verifyToken, async (req, res) => {
     const postId = req.params.postId;
     const title = req.body.title;
     //Check if post exists
-    const currentPost = await post.findById(postId);
+    const currentPost = await Post.findById(postId);
     if (!currentPost) {
       return res.status(404).json({ message: "Post not found" });
     }
