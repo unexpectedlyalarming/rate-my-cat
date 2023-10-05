@@ -5,7 +5,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const session = require("express-session");
 const bcryptjs = require("bcryptjs");
-
+const { verify } = require("jsonwebtoken");
+const verifyToken = require("./routes/auth");
 //Log incoming requests
 
 app.use((req, res, next) => {
@@ -41,6 +42,8 @@ app.use(
 //Register and login routes
 
 app.use("/auth", require("./routes/auth"));
+
+app.use(verifyToken);
 
 //Post routes
 
