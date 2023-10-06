@@ -114,4 +114,10 @@ router.delete("/:catId", verifyToken, async (req, res) => {
   }
 });
 
+//Follower subroutes
+
+const followerRouter = require("./cats/followers");
+
+router.use("/:catId/followers", followerRouter);
+
 module.exports = router;

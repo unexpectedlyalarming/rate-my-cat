@@ -145,4 +145,10 @@ router.patch("/:postId", verifyToken, async (req, res) => {
   }
 });
 
+//Reaction subroutes
+
+const reactionRouter = require("./posts/reactions");
+
+router.use("/:postId/reactions", reactionRouter);
+
 module.exports = router;
