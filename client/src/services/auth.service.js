@@ -24,7 +24,7 @@ class Auth {
         return response.data;
       })
       .catch((err) => {
-        console.error(err);
+        return new Error(err.response.data.message);
       });
   }
 
@@ -49,7 +49,7 @@ class Auth {
         { withCredentials: true }
       )
       .catch((err) => {
-        console.error(err);
+        return new Error(err.response.data.message);
       });
   }
 

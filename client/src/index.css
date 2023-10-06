@@ -198,3 +198,47 @@ footer ul {
   flex-direction: column;
    
 }
+
+/* styles for login and signup forms */
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5rem;
+  flex-grow: 1;
+  text-align: left;
+  gap: 1rem;
+  width: 100%;
+  background-color: #333;
+  padding: 2rem;
+  border-radius: 10px;
+}
+.form-container label {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+.form-container input {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  background-color:#242424;
+}
+
+.form-container .hidden {
+  display: none;
+}
+.form-container .error {
+  display: flex;
+  color: rgb(251, 138, 138);
+  font-weight: 600;
+  font-style: italic;
+}
+.form-container button {
+  width: 100%;
+}
