@@ -2,10 +2,11 @@ import React, { useContext } from 'react';
 import Auth from '../services/auth.service';
 import { UserContext } from '../providers/userContext';
 import Nav from './Nav';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Register() {
+    const navigate = useNavigate();
 
 
     async function handleRegister(e) {
@@ -15,7 +16,7 @@ export default function Register() {
             const username = e.target.username.value;
             const password = e.target.password.value;
              if(Auth.register(username, password)){
-                Navigate('/login')
+                navigate('/login')
              }
 
         } catch (err) {
