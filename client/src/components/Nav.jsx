@@ -1,13 +1,47 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, Navigate } from 'react-router-dom';
+import Auth from '../services/auth.service';
+//Import usercontext from provider, check if logged in. If so, hide login/register buttons and show logout button
+
+import { UserContext } from '../providers/userContext';
+
 export default function Nav() {
+
+
+    const {user, setUser} = useContext(UserContext);
+
     const [mobileMenu, setMobileMenu] = React.useState(false)
 
     function toggleMobileMenu() {
         setMobileMenu(!mobileMenu)
     }
 
+    async function logout(e) {
+        e.preventDefault();
+        Auth.logout();
+        setUser(null);
+        Navigate('/')
+        
+    }
 
+    //Import usercontext from provider, check if logged in. If so, hide login/register buttons and show logout button
+    //If not logged in, show login/register buttons and hide logout button
+
+
+
+const loggedOut = (
+    <div className={`nav-container ${mobileMenu ? 'active' : ''}`}>
+        <nav className="nav">
+            <ul className="logged-out">
+                <li><Link to="/login">Login</Link></li>
+                <li><Link to="/register">Register</Link></li>
+            </ul>
+        </nav>
+    </div>
+    );
+
+
+        if (!user) return loggedOut;
 
     return (
         <div className={`nav-container ${mobileMenu ? 'active' : ''}`}>
@@ -15,17 +49,18 @@ export default function Nav() {
         <nav className="nav">
             <ul>
 
-                <li><Link href="/">Home</Link></li>
-                <li><Link href="/cats">Cats</Link></li>
-                <li><Link href="/leaderboard">Leaderboard</Link></li>
+                <li><Link to="/">Home</Link></li>
+                <li><Link to="/cats">Cats</Link></li>
+                <li><Link to="/leaderboard">Leaderboard</Link></li>
 
             </ul>
-            <ul>
-                <li><Link href="/login">Login</Link></li>
-                <li><Link href="/register">Register</Link></li>
-                <li><Link href="/logout">Logout</Link></li>
+            <ul className="logged-in">
+                <li><button onClick={logout}>Logout</button>
+                </li>
+                </ul>
 
-            </ul>
+            
+            
             </nav>
             <button className="nav-button" onClick={toggleMobileMenu}>Menu</button>
 

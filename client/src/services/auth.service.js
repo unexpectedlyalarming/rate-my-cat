@@ -18,8 +18,8 @@ class Auth {
         { withCredentials: true }
       )
       .then((response) => {
-        if (response.data.cookies.accessToken) {
-          this.currentUser = response.data.user;
+        if (response.data) {
+          this.currentUser = response.data;
         }
         return response.data;
       })
