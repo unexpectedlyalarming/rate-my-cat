@@ -5,9 +5,13 @@ import { Navigate, Outlet, RouterProvider, createBrowserRouter } from 'react-rou
 import Nav from './components/Nav.jsx'
 import Footer from './components/Footer.jsx'
 import { UserProvider } from './providers/userContext.js'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Login from './components/Login.jsx'
 import Register from './components/Register.jsx'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+
+const queryClient = new QueryClient();
 
 
 function Routers () {
@@ -72,12 +76,14 @@ const router = createBrowserRouter([
 ])
 
 return (
+  <QueryClientProvider client={queryClient}>
   <UserProvider value={{ user, setUser }}>
   <RouterProvider router={router}>
     </RouterProvider>
   </UserProvider>
-)
- 
+ <ReactQueryDevtools/> 
+    </QueryClientProvider>
+ )
 
 
 }

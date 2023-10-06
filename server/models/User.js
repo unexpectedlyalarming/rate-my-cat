@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
   bio: { type: String, required: false },
   date: { type: Date, default: Date.now, required: true },
   cats: [{ type: mongoose.Schema.Types.ObjectId, ref: "Cat" }],
-  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
+  ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Rating" }],
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
 });
 

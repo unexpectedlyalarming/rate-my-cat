@@ -1,8 +1,8 @@
-//Review Schema. Includes information like rating, comment, and a reference to the userId and postId.
+//Rating Schema. Includes information like rating, comment, and a reference to the userId and postId.
 
 const mongoose = require("mongoose");
 
-const reviewSchema = new mongoose.Schema({
+const ratingSchema = new mongoose.Schema({
   rating: { type: Number, required: true, min: 1, max: 10 },
   comment: { type: String },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
@@ -10,6 +10,6 @@ const reviewSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now, required: true },
 });
 
-const Review = mongoose.model("Review", reviewSchema);
+const Rating = mongoose.model("Rating", ratingSchema);
 
-module.exports = Review;
+module.exports = Rating;

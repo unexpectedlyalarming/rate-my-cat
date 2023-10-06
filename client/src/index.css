@@ -175,8 +175,11 @@ nav {
   align-items: center;
   justify-content: center;
   margin-top: 5rem;
+
   flex-grow: 1;
 }
+
+/* footer */
 
 footer {
   display: flex;

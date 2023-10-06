@@ -8,6 +8,7 @@ const catSchema = new mongoose.Schema({
   age: { type: Number, required: true },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   image: { type: String, required: true },
+  followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Follower" }],
 });
 
 const Cat = mongoose.model("Cat", catSchema);
