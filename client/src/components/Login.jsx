@@ -18,12 +18,14 @@ export default function Login() {
             const password = e.target.password.value;
 
             const loggedUser = await Auth.login(username, password);
+            console.log(loggedUser)
             if(loggedUser instanceof Error) {
                 setErrorMsg(loggedUser.message);
                 throw loggedUser;
             }
             if (loggedUser) {
-                await setUser(loggedUser);
+                await setUser(loggedUser.user);
+
             }
         } catch (err) {
             throw new Error(err.message);

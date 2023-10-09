@@ -4,13 +4,17 @@ import Footer from './components/Footer'
 import Nav from './components/Nav'
 import Post from './components/Post'
 import Posts from './services/posts.service'
+import { useState } from 'react'
+import CreatePost from './components/CreatePost'
 
 
 
 function App() {
 
+
+
   async function fetchPosts () {
-    const posts = await Posts.getAll();
+    const posts = await Posts.getAllPosts();
     return posts;
   }
 
@@ -37,11 +41,13 @@ function App() {
     <>
 
       <div className="container">
-        {/* {posts.forEach(post => {
-          <Post post={post} key={post.id}/>
-        })
-        } */}
+        <CreatePost />  
 
+
+        {posts ? posts.map(post => {
+          <Post post={post} key={post.id}/>
+        }) : null
+        }
           <h2>Posts</h2>
       </div>
 

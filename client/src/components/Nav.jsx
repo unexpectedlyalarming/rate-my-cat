@@ -42,8 +42,8 @@ const loggedOut = (
                 <li><Link to="/leaderboard">Leaderboard</Link></li>
             </ul>
             <ul className="logged-in">
-                <li><button onClick={logout}>Logout</button>
-                </li>
+                <li><Link to={`/profile/${user?.id?.toString()}`}>Profile</Link></li>
+                <li><button onClick={logout}>Logout</button></li>
                 </ul>
             </nav>
             <button className="nav-button" onClick={toggleMobileMenu}>Menu</button>

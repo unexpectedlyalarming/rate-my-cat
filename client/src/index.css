@@ -86,11 +86,14 @@ nav {
   display: flex;
   justify-content: space-around;
   align-items: center;
+
 }
 
 .nav ul {
   list-style: none;
   display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 1rem;
 }
 
@@ -188,7 +191,7 @@ footer {
   background-color: #333;
   width: 100%;
   margin: 0;
-  padding: 2rem;
+
   
 
 }
@@ -209,7 +212,7 @@ footer ul {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 5rem;
+
   flex-grow: 1;
   text-align: left;
   gap: 1rem;
@@ -236,6 +239,9 @@ footer ul {
 .form-container .hidden {
   display: none;
 }
+form.form-container.hidden {
+  display: none;
+}
 .form-container .error {
   display: flex;
   color: rgb(251, 138, 138);
@@ -243,5 +249,16 @@ footer ul {
   font-style: italic;
 }
 .form-container button {
+  width: 100%;
+}
+
+/* Style for create post module */
+
+.create-post-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
   width: 100%;
 }

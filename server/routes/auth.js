@@ -101,7 +101,15 @@ router.post("/login", async (req, res) => {
           httpOnly: true,
           maxAge: 1000 * 60 * 30,
         });
-        return res.status(200).json({ token: token, message: "Logged in" });
+        //Return token, and user object that contains basic user info (username, id, profile picture)
+        return res.status(200).json({
+          token,
+          user: {
+            username: user.username,
+            id: user._id,
+            profilePicture: user.profilePicture,
+          },
+        });
       } else {
         return res.status(400).json({ message: "Incorrect password" });
       }

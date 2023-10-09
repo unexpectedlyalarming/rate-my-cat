@@ -10,6 +10,7 @@ import Login from './components/Login.jsx'
 import Register from './components/Register.jsx'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+import Profile from './components/Profile.jsx'
 
 const queryClient = new QueryClient();
 
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
         path: "/leaderboard",
         element: <App />,
       },
+      {
+        path: "/profile/:id",
+        element: <Profile />,
+      },
     ],
   },
     {
@@ -71,7 +76,7 @@ const router = createBrowserRouter([
     },
     {
       path: "*",
-      element: <App />,
+      element: <Login />,
     },
 ])
 

@@ -19,7 +19,7 @@ class Auth {
       )
       .then((response) => {
         if (response.data) {
-          this.currentUser = response.data;
+          this.currentUser = response.data.user;
         }
         return response.data;
       })
