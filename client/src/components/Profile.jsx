@@ -6,25 +6,31 @@ import { UserContext } from '../providers/userContext';
 import { useParams } from 'react-router-dom';
 import Users from '../services/users.service';
 import Posts from '../services/posts.service';
-
+import { formatDistanceToNow } from 'date-fns';
+import Post from './Post';
+import Cat from './CatProfile';
 
 
 //TODO: Send back array of cats and posts with user info
 export default function Profile () {
-
+    
     //Set up react query for fetching user info from URL params
     const {id} = useParams();
-
-
+    
+    
     async function fetchProfile () {
-        const profile = await Users.getUserById(id);
-        return profile;
-      }
+        try {
+            const profile = await Users.getUserById(id);
+            return profile;
+        } catch (err) {
+            console.error(err)
+        }
+    }
     
     
     
     
-      const {
+    const {
         status,
         error,
         data: user,
@@ -33,27 +39,41 @@ export default function Profile () {
         queryFn: fetchProfile,
         refetchInterval: 7000,
     });
-    
 
+    if (status === "loading") {
+        return <p>Loading...</p>;
+      }
+      
+      if (status === "error") {
+        return <p className="error">An error has occurred: {error.message}</p>;
+      }
+    
+    const date = formatDistanceToNow(new Date(user.date), { addSuffix: true }) || null;
+    
+    const catsList = (user && user.cats.length > 0) ? user?.cats.map(cat => (
+        <Cat cat={cat} key={cat.id}/>
+    )) : <p>No cats yet!</p>;
+
+const postsList = (user && user.posts.length > 0) ? user?.posts.map(post => (
+    <Post post={post} key={post.id}/>
+)) : <p>No posts yet!</p>;
 
     return (
         <div className="container profile-container">
             <div className="profile-header">
                 <h2>{user?.username}</h2>
-                <p className="profile-date">Joined: {user?.date}</p>
+                <p className="profile-date">Joined {date}</p>
                 <p className="profile-bio">{user?.bio}</p>
-                <p className="Total ratings: {user.ratings.length}"></p>
+                <p className="profile-ratings">Total ratings: {user.ratings.length}</p>
                 </div>
                 <div className="profile-cats"> 
-                    {user ? user?.cats.map(cat => {
-                        <Cat cat={cat} key={cat.id}/>
-                    }) : null}
+                <h2>Cats</h2>
+                    {catsList}
                 
                 </div>
                 <div className="profile-posts"> 
-                    {user ? user?.posts.map(post => {
-                        <Post post={post} key={post.id}/>
-                    }) : null}
+                <h2>Posts</h2>
+                    {postsList}
                 
                 </div>
 

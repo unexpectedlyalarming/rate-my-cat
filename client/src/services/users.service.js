@@ -14,6 +14,7 @@ class Users {
       .get(SERVER_URL + "/users", { withCredentials: true })
       .then((response) => {
         this.user = response.data;
+        return response.data;
       })
       .catch((err) => {
         console.error(err);
@@ -26,6 +27,7 @@ class Users {
       .get(SERVER_URL + "/users/" + userId, { withCredentials: true })
       .then((response) => {
         this.user = response.data;
+        return response.data;
       })
       .catch((err) => {
         console.error(err);

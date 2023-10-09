@@ -11,6 +11,7 @@ import Register from './components/Register.jsx'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import Profile from './components/Profile.jsx'
+import CatProfile from './components/CatProfile.jsx'
 
 const queryClient = new QueryClient();
 
@@ -49,8 +50,8 @@ const router = createBrowserRouter([
         element: <App />,
       },
       {
-        path: "/cats",
-        element: <App />,
+        path: "/cat/:id",
+        element: <CatProfile />,
       },
       {
         path: "/leaderboard",

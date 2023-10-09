@@ -13,7 +13,7 @@ function App() {
 
 
 
-  async function fetchPosts () {
+  async function fetchPosts() {
     const posts = await Posts.getAllPosts();
     return posts;
   }
@@ -45,7 +45,9 @@ if (status === "error") return <p className="error">An error has occured fetchin
 
       <div className="container">
         <CreatePost />  
+        <div className="posts-container">
         {postsList}
+          </div>
           <h2>Posts</h2>
       </div>
 

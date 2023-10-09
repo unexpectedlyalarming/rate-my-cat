@@ -13,6 +13,7 @@ class Cats {
       .get(SERVER_URL + "/cats", { withCredentials: true })
       .then((response) => {
         this.cat = response.data;
+        return response.data;
       })
       .catch((err) => {
         console.error(err);
@@ -39,6 +40,7 @@ class Cats {
       .get(SERVER_URL + "/cats/" + catId, { withCredentials: true })
       .then((response) => {
         this.cat = response.data;
+        return response.data;
       })
       .catch((err) => {
         console.error(err);
