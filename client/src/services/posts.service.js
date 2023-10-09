@@ -12,6 +12,7 @@ class Posts {
       .get(SERVER_URL + "/posts", { withCredentials: true })
       .then((response) => {
         this.post = response.data;
+        return this.post;
       })
       .catch((err) => {
         console.error(err);

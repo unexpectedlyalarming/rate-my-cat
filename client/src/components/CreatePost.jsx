@@ -4,7 +4,7 @@ import { UserContext } from '../providers/userContext';
 import Cats from '../services/cats.service';
 
 export default function CreatePost() {
-    const [togglePost, setTogglePost] = useState(false);
+    const [togglePost, setTogglePost] = useState(true);
     const [toggleImageType, setToggleImageType] = useState("url");
     const {user, setUser } = useContext(UserContext);
     const [cats, setCats] = useState(null);

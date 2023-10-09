@@ -262,3 +262,59 @@ form.form-container.hidden {
   gap: 1rem;
   width: 100%;
 }
+
+/* styles for post module */
+
+.post-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 70%;
+  background-color: #333;
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+.post-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+}
+
+.post-header h2 {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.post-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+}
+.post-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+}
+.post-body img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+.post-cat {
+  font-size: .8rem;
+  font-weight: 500;
+  font-style: italic;
+  
+}

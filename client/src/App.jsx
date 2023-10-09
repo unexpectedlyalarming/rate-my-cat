@@ -31,9 +31,12 @@ function App() {
     refetchInterval: 7000,
 });
 
+const postsList = posts?.map((post) => (
+  <Post post={post} key={post._id}/>
+)) || [];
 
-// if (status === "loading") return <p>Loading...</p>
-// if (status === "error") return <p className="error">{error.message}</p>
+if (status === "loading") return <p>Loading...</p>
+if (status === "error") return <p className="error">An error has occured fetching posts.</p>
 
 
 
@@ -42,12 +45,7 @@ function App() {
 
       <div className="container">
         <CreatePost />  
-
-
-        {posts ? posts.map(post => {
-          <Post post={post} key={post.id}/>
-        }) : null
-        }
+        {postsList}
           <h2>Posts</h2>
       </div>
 

@@ -9,8 +9,28 @@ const verifyToken = require("./auth");
 //Get all posts
 router.get("/", async (req, res) => {
   try {
-    const posts = await Post.find();
-    res.json(posts);
+    const posts = await Post.aggregate([
+      {
+        $lookup: {
+          from: "cats",
+          localField: "catId",
+          foreignField: "_id",
+          as: "cat",
+        },
+      },
+      {
+        $project: {
+          catName: "$cat.name",
+          title: 1,
+          image: 1,
+          catId: 1,
+          date: 1,
+          reactions: 1,
+        },
+      },
+    ]);
+    console.log(posts);
+    res.status(200).json(posts);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
