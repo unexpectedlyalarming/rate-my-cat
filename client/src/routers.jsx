@@ -12,6 +12,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import Profile from './components/Profile.jsx'
 import CatProfile from './components/CatProfile.jsx'
+import CatList from './components/CatList.jsx'
+import Leaderboard from './components/Leaderboard.jsx'
+import AddCat from './components/addCat.jsx'
 
 const queryClient = new QueryClient();
 
@@ -54,13 +57,22 @@ const router = createBrowserRouter([
         element: <CatProfile />,
       },
       {
+        path: "/cats",
+        element: <CatList />,
+
+      },
+      {
         path: "/leaderboard",
-        element: <App />,
+        element: <Leaderboard />,
       },
       {
         path: "/profile/:id",
         element: <Profile />,
       },
+      {
+        path: "/add-cat",
+        element: <AddCat />
+      }
     ],
   },
     {

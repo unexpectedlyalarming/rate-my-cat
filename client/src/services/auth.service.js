@@ -35,7 +35,7 @@ class Auth {
         this.currentUser = null;
       })
       .catch((err) => {
-        console.error(err);
+        return new Error(err.response.data.message);
       });
   }
   register(username, password) {

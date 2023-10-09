@@ -56,7 +56,7 @@ class Cats {
         this.cat = response.data;
       })
       .catch((err) => {
-        console.error(err);
+        return new Error(err.response.data.message);
       });
   }
 

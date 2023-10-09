@@ -91,7 +91,9 @@ button:focus-visible {
 }
 
 
-
+.hidden {
+  display: none;
+}
 
 
 .nav-container {
@@ -274,6 +276,25 @@ form.form-container.hidden {
 .form-container button {
   width: 100%;
 }
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+}
+
+input.input-error {
+  border: 2px solid rgb(182, 54, 54);
+}
+input:focus {
+  background-color: rgb(53, 93, 53);
+}
+input.input-error:focus {
+  background-color: rgb(59, 15, 15);
+
+}
 
 /* Style for create post module */
 
@@ -354,4 +375,15 @@ form.form-container.hidden {
   flex-direction: column;
   gap: 5rem;
   padding: 1rem;
+}
+
+
+
+/* leaderboard */
+
+.leaderboard-container {
+  display: flex;
+  flex-direction: row !important;
+  justify-content: center;
+  align-items: center
 }

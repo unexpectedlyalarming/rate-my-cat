@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { UserContext } from '../providers/userContext';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Users from '../services/users.service';
 import Posts from '../services/posts.service';
 import { formatDistanceToNow } from 'date-fns';
@@ -58,6 +58,8 @@ const postsList = (user && user.posts.length > 0) ? user?.posts.map(post => (
     <Post post={post} key={post.id}/>
 )) : <p>No posts yet!</p>;
 
+const isUsersProfile = (user._id === id) ? true : false;
+
     return (
         <div className="container profile-container">
             <div className="profile-header">
@@ -68,6 +70,7 @@ const postsList = (user && user.posts.length > 0) ? user?.posts.map(post => (
                 </div>
                 <div className="profile-cats"> 
                 <h2>Cats</h2>
+                {isUsersProfile && <p className="profile-add-cat"><Link to="/add-cat">Add a cat</Link></p>}
                     {catsList}
                 
                 </div>
