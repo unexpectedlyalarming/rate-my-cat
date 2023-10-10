@@ -5,6 +5,8 @@ const Post = require("../models/Post");
 const Cat = require("../models/Cat");
 const User = require("../models/User");
 const verifyToken = require("./auth");
+const jwt = require("jsonwebtoken");
+const secretCode = require("../secretCode");
 
 //Get all posts
 router.get("/", async (req, res) => {
@@ -71,23 +73,21 @@ router.get("/:postId", async (req, res) => {
 
 //Create new post
 
-router.post("/", verifyToken, async (req, res) => {
+router.post("/", async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = jwt.verify(req.cookies.accessToken, secretCode).id;
+    // const userId = req.user.id;
     const catId = req.body.catId;
     //Check if catId is owned by userid
     const currentCat = await Cat.findById(catId);
-    if (currentCat.userId !== userId) {
-      return res.status(401).json({ message: "Unauthorized" });
+    if (!currentCat || currentCat.userId !== userId) {
+      return res.status(401).json({ message: "You do not own this cat" });
     }
     const title = req.body.title;
-    const description = req.body.description;
     const image = req.body.image;
     const newPost = new Post({
-      userId: userId,
       catId: catId,
       title: title,
-      description: description,
       image: image,
     });
     const post = await newPost.save();
@@ -107,7 +107,7 @@ router.post("/", verifyToken, async (req, res) => {
 
 //Delete post
 
-router.delete("/:postId", verifyToken, async (req, res) => {
+router.delete("/:postId", async (req, res) => {
   try {
     const userId = req.user.id;
     const postId = req.params.postId;
@@ -138,7 +138,7 @@ router.delete("/:postId", verifyToken, async (req, res) => {
 
 //Edit post
 
-router.patch("/:postId", verifyToken, async (req, res) => {
+router.patch("/:postId", async (req, res) => {
   //Only allow updating title
 
   try {

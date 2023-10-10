@@ -27,6 +27,7 @@ class Cats {
       .get(SERVER_URL + "/cats/user/" + userId, { withCredentials: true })
       .then((response) => {
         this.cat = response.data;
+        return response.data;
       })
       .catch((err) => {
         console.error(err);

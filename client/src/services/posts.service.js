@@ -59,15 +59,14 @@ class Posts {
 
   //Create new post
 
-  createPost(catId, title, description, image) {
+  createPost(title, image, catId) {
     return axios
       .post(
         SERVER_URL + "/posts",
         {
-          catId,
           title,
-          description,
           image,
+          catId,
         },
         { withCredentials: true }
       )

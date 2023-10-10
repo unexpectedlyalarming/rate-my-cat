@@ -381,13 +381,32 @@ input.input-error:focus {
 
 /* leaderboard */
 
-.leaderboard-container {
-  display: flex;
-  flex-direction: row !important;
-  justify-content: center;
-  align-items: center
-}
+/* Leaderboard has 3 rows in a grid that can wrap */
 
+.leaderboard-container {
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 5fr));
+  gap: 1rem;
+  width: 80vw;
+  max-width: 70%;
+  margin: 0 auto;
+  padding: 1rem;
+  padding-top: 5rem;
+  justify-items: center;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
+.leaderboard-container ul {
+  list-style: none;
+  text-align: left;
+}
+.top-day, .top-month, .top-alltime {
+  align-self: start;
+  width: 25vw;
+
+}
 /* styles for profile module */
 
 /* Array of cats represented as a grid that can wrap */

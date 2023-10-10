@@ -7,41 +7,106 @@ import Users from '../services/users.service';
 import Post from './Post';
 import Cat from './CatProfile';
 import { useMediaQuery } from 'react-responsive';
-
+import Leaderboards from '../services/leaderboard.service'
 
 export default function Leaderboard () {
 
 
 
-    const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
+    const isMobile = useMediaQuery({ query: `(max-width: 1100px)` });
 
     const isHidden = isMobile ? "hidden" : "";
 
     const isNotHidden = !isMobile ? "hidden" : "";
+
+    async function fetchLeaderboard () {
+        try {
+            const leaderboard = await Leaderboards.getFullLeaderboard();
+            console.log(leaderboard)
+            return leaderboard;
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+
+    const {
+        status,
+        error,
+        data: leaderboard,
+    } = useQuery({
+        queryKey: ["leaderboard"],
+        queryFn: fetchLeaderboard,
+        refetchInterval: 7000,
+    });
+
+    if (status === "loading") {
+        return <p>Loading...</p>;
+      }
+      
+      if (status === "error") {
+        return <p className="error">An error has occurred: {error.message}</p>;
+      }
+
+      const topDay = leaderboard.day.length > 0 ? leaderboard?.day?.map((cat, index) => (
+        <li key={cat.id}> 
+        <h3>#{leaderboard.day[cat] + 1}</h3>
+        <h2>{cat.name}</h2>
+        <p>Average Rating: {cat.averageRating.toFixed(1)}</p>
+        </li>
+        )) : <li><p>There are no top cats of the day.</p></li>;
+
+        const topMonth = leaderboard.month.length > 0 ? leaderboard?.month?.map((cat, index) => (
+            <li key={cat.id}> 
+            <h3>#{index + 1}</h3>
+            <h2>{cat.name}</h2>
+            <p>Average Rating: {cat.averageRating.toFixed(1)}</p>
+            </li>
+            )) : <li><p>There are no top cats of the month.</p></li>;
+
+        const topAllTime = leaderboard.all.length > 0 ? leaderboard?.all?.map((cat, index) => (
+            <li key={cat.id}> 
+            <h3>#{index + 1}</h3>
+            <h2>{cat.name}</h2>
+            <p>Average Rating: {cat.averageRating.toFixed(1)}</p>
+            </li>
+            )) : <li><p>There are no top cats of all time.</p></li>;
+
+
+            
+
     return (
+
         <div className="container leaderboard-container">
+            
+            
             <div className={`top-day ${isHidden}`}>
                 <ul>
-                You&apos;re
+                    <li><h1>Day</h1></li>
+               {topDay}
                 </ul>
 
             </div>
             <div className={`top-month ${isHidden}`}>
                 <ul>
-on
+                    <li><h1>Month</h1></li>
+                {topMonth}
+
                 </ul>
 
             </div>
             <div className={`top-alltime ${isHidden}`}>
                 <ul>
-                    Desktop
+                    <li><h1>All Time</h1></li>
+                {topAllTime}
+
                 </ul>
 
             </div>
             {/* Mobile layout, one column */}
             <div className={`leaderboard-mobile ${isNotHidden}`}>
                 <ul>
-                   You&apos;re on mobile
+                   
 
                 </ul>
             </div>

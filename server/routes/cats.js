@@ -12,8 +12,9 @@ const jwt = require("jsonwebtoken");
 
 router.get("/user/:userId", async (req, res) => {
   try {
-    const cats = await Cat.find({ userId: req.params.userId });
-    console.log("getting cats by userid");
+    const userId = req.user.id;
+    const cats = await Cat.find({ userId: userId });
+
     res.status(200).json(cats);
   } catch (err) {
     res.status(500).json({ message: err.message });

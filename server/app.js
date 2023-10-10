@@ -49,6 +49,7 @@ app.use("/auth", require("./routes/auth"));
 
 //Verify token middleware
 const verifyToken = require("./routes/verifyToken");
+app.use(verifyToken);
 
 //Post routes
 
