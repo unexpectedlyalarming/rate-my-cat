@@ -4,8 +4,8 @@ const router = express.Router();
 const Cat = require("../models/Cat");
 const User = require("../models/User");
 const verifyToken = require("./auth");
-const Review = require("../models/Rating");
-
+const Rating = require("../models/Rating");
+const Post = require("../models/Post");
 //Get all users
 
 router.get("/", async (req, res) => {
@@ -28,14 +28,16 @@ router.get("/:userId", async (req, res) => {
   }
 });
 
-//Get user profile (Fetch user, and all cats, posts, and reviews associated with user)
+//Get user profile (Fetch user, and all cats, posts, and ratings associated with user)
 
 router.get("/profile/:userId", async (req, res) => {
   try {
-    const users = await User.findById(req.params.userId);
+    const user = await User.findById(req.params.userId);
     const cats = await Cat.find({ userId: req.params.userId });
-    const reviews = await Review.find({ userId: req.params.userId });
-    res.status(200).json({ users, cats, reviews });
+    const ratings = await Rating.find({ userId: req.params.userId });
+    //Posts are stored under catId, so we need to find all posts where catId is in cats array
+    const posts = await Post.find({ catId: { $in: cats } });
+    res.status(200).json({ user, cats, ratings, posts });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

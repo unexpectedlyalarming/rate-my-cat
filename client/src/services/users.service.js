@@ -40,6 +40,7 @@ class Users {
       .get(SERVER_URL + "/users/profile/" + userId, { withCredentials: true })
       .then((response) => {
         this.user = response.data;
+        return response.data;
       })
       .catch((err) => {
         console.error(err);

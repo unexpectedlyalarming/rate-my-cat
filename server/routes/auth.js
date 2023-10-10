@@ -5,48 +5,19 @@ const router = express.Router();
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const secretCode = require("../secretCode");
 
-const jwtKey = bcrypt.genSaltSync(10);
+const jwtKey = secretCode;
 
 //Function that signs token whenever user is verified, takes in user object
 async function giveToken(user) {
-  return async function (req, res, next) {
-    //Signs token with user, expires in 30 minutes
+  try {
     const token = jwt.sign({ user: user }, jwtKey, {
       expiresIn: 1800,
     });
-    req.user = user;
     return token;
-  };
-}
-//Middleware to check if token is valid, reissues token if about to expire
-
-async function verifyToken(req, res, next) {
-  const token = req.cookies.accessToken;
-  if (!token) return res.status(401).json({ message: "Unauthorized" });
-  try {
-    const verified = jwt.verify(token, jwtKey);
-    if (verified) {
-      //If token is about to expire, reissue token
-      if (verified.exp - Date.now() / 1000 < 60 * 5) {
-        const token = await giveToken(verified);
-        res.cookie("accessToken", token, {
-          httpOnly: true,
-          maxAge: 1000 * 60 * 30,
-        });
-      }
-      const foundUser = await User.findOne({
-        username: verified.username,
-      });
-      if (foundUser) {
-        req.user = foundUser;
-        next();
-      }
-    } else {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    return new Error(err.message);
   }
 }
 
@@ -95,20 +66,22 @@ router.post("/login", async (req, res) => {
       }
 
       if (result) {
-        const token = await giveToken(user);
+        const newUser = {
+          username: user.username,
+          id: user._id,
+          profilePicture: user.profilePicture,
+        };
+        const token = await giveToken(newUser);
         //Set token as httponly cookie, expires in 30m
         res.cookie("accessToken", token, {
           httpOnly: true,
           maxAge: 1000 * 60 * 30,
         });
+        req.user = newUser;
         //Return token, and user object that contains basic user info (username, id, profile picture)
         return res.status(200).json({
-          token,
-          user: {
-            username: user.username,
-            id: user._id,
-            profilePicture: user.profilePicture,
-          },
+          cookies: req.cookies,
+          user: newUser,
         });
       } else {
         return res.status(400).json({ message: "Incorrect password" });

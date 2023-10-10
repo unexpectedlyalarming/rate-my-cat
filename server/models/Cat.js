@@ -6,8 +6,8 @@ const catSchema = new mongoose.Schema({
   breed: { type: String, required: true },
   color: { type: String, required: true },
   age: { type: Number, required: true },
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   image: { type: String, required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Follower" }],
 });
 

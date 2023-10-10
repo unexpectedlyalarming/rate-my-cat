@@ -57,7 +57,7 @@ const postsList = (cat && cat?.posts?.length > 0) ? cat?.posts.map(post => (
                 <p className="profile-date">{cat?.age?.toString()} years old</p>
                 <p className="profile-color">Color: {cat?.color}</p>
                 <p className="profile-breed">Breed: {cat?.breed}</p>
-                <Link className="profile-owner" to={`/profile/${cat?.userId}`}>Owner: {cat?.userId}</Link>
+                <Link className="profile-owner" to={`/profile/${cat?.userId}`}>Owner: {cat?.owner}</Link>
                 <p className="profile-ratings">Total ratings: {cat?.ratings?.length}</p>
                 </div>
                 <div className="profile-posts"> 

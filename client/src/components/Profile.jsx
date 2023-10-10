@@ -8,7 +8,7 @@ import Users from '../services/users.service';
 import Posts from '../services/posts.service';
 import { formatDistanceToNow } from 'date-fns';
 import Post from './Post';
-import Cat from './CatProfile';
+import Cat from './Cat';
 
 
 //TODO: Send back array of cats and posts with user info
@@ -20,7 +20,7 @@ export default function Profile () {
     
     async function fetchProfile () {
         try {
-            const profile = await Users.getUserById(id);
+            const profile = await Users.getProfileById(id);
             return profile;
         } catch (err) {
             console.error(err)
@@ -33,9 +33,9 @@ export default function Profile () {
     const {
         status,
         error,
-        data: user,
+        data: profile,
     } = useQuery({
-        queryKey: ["user"],
+        queryKey: ["profile"],
         queryFn: fetchProfile,
         refetchInterval: 7000,
     });
@@ -48,34 +48,34 @@ export default function Profile () {
         return <p className="error">An error has occurred: {error.message}</p>;
       }
     
-    const date = formatDistanceToNow(new Date(user.date), { addSuffix: true }) || null;
+    const date = formatDistanceToNow(new Date(profile?.user?.date), { addSuffix: true }) || null;
     
-    const catsList = (user && user.cats.length > 0) ? user?.cats.map(cat => (
+    const catsList = (profile && profile?.cats.length > 0) ? profile?.cats.map(cat => (
         <Cat cat={cat} key={cat.id}/>
     )) : <p>No cats yet!</p>;
 
-const postsList = (user && user.posts.length > 0) ? user?.posts.map(post => (
+const postsList = (profile && profile?.posts.length > 0) ? profile?.posts.map(post => (
     <Post post={post} key={post.id}/>
 )) : <p>No posts yet!</p>;
 
-const isUsersProfile = (user._id === id) ? true : false;
+const isUsersProfile = (profile?.user?._id === id) ? true : false;
 
     return (
         <div className="container profile-container">
             <div className="profile-header">
-                <h2>{user?.username}</h2>
+                <h2>{profile?.user?.username}</h2>
                 <p className="profile-date">Joined {date}</p>
-                <p className="profile-bio">{user?.bio}</p>
-                <p className="profile-ratings">Total ratings: {user.ratings.length}</p>
+                <p className="profile-bio">{profile?.user?.bio}</p>
+                <p className="profile-ratings">Total ratings: {profile?.ratings?.length}</p>
                 </div>
-                <div className="profile-cats"> 
                 <h2>Cats</h2>
                 {isUsersProfile && <p className="profile-add-cat"><Link to="/add-cat">Add a cat</Link></p>}
+                <div className="profile-cats"> 
                     {catsList}
                 
                 </div>
-                <div className="profile-posts"> 
                 <h2>Posts</h2>
+                <div className="profile-posts"> 
                     {postsList}
                 
                 </div>

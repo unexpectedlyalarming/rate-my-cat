@@ -47,7 +47,6 @@ export default function AddCat() {
       color: e.target.color.value,
       age: e.target.age.value,
       image: e.target.image.value,
-      bio: e.target.bio.value,
     };
     if (handleErrors(e) instanceof Error) {
       return;
@@ -80,8 +79,6 @@ export default function AddCat() {
           </select><br></br>
           <label htmlFor="image">Image*</label>
           <input type={type} className="input-error"  id="image" name="image" onChange={handleChange} required/>
-          <label htmlFor="bio">Bio</label>
-          <textarea id="bio" className="input-error"  name="bio" rows="4" cols="50" onChange={handleChange} ></textarea>
           <button type="submit">Create Cat</button>
           {errorMsg && <p className="error">{errorMsg}</p>}
         </form>

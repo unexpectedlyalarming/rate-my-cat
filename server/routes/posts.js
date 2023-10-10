@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
         },
       },
     ]);
-    console.log(posts);
+
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json({ message: err.message });

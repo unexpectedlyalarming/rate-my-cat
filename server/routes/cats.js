@@ -4,25 +4,16 @@ const router = express.Router();
 const Cat = require("../models/Cat");
 const User = require("../models/User");
 const verifyToken = require("./auth");
-const Review = require("../models/Rating");
+const Ratings = require("../models/Rating");
 const post = require("../models/Post");
-
-//Get all cats
-
-router.get("/", async (req, res) => {
-  try {
-    const cats = await Cat.find();
-    res.status(200).json(cats);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
+const jwt = require("jsonwebtoken");
 
 //Get all cats by userId
 
 router.get("/user/:userId", async (req, res) => {
   try {
     const cats = await Cat.find({ userId: req.params.userId });
+    console.log("getting cats by userid");
     res.status(200).json(cats);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -34,8 +25,28 @@ router.get("/user/:userId", async (req, res) => {
 router.get("/:catId", async (req, res) => {
   try {
     const cats = await Cat.findById(req.params.catId);
+    //Find posts associated with cat
+    const posts = await post.find({ catId: req.params.catId });
+    //Find userId username
+    const owner = await User.findById(cats.userId);
+    const ownerUsername = owner.username;
 
-    res.status(200).json(cats);
+    //Find ratings associated with cat
+    const ratings = await Ratings.find({ catId: req.params.catId });
+
+    const newCats = {
+      name: cats.name,
+      breed: cats.breed,
+      age: cats.age,
+      bio: cats.bio,
+      image: cats.image,
+      userId: cats.userId,
+      owner: ownerUsername,
+      ratings: ratings,
+
+      posts: posts,
+    };
+    res.status(200).json(newCats);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -43,18 +54,17 @@ router.get("/:catId", async (req, res) => {
 
 //Create new cat
 
-router.post("/", verifyToken, async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const userId = req.user.id;
     const newCat = new Cat({
       name: req.body.name,
       breed: req.body.breed,
       age: req.body.age,
-      bio: req.body.bio,
       image: req.body.image,
       userId: userId,
     });
-    await newCat.save();
+
     res.status(200).json(newCat);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -95,10 +105,10 @@ router.delete("/:catId", verifyToken, async (req, res) => {
     if (currentCat.userId !== userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-    //Delete all reviews associated with cat
-    const reviews = await Review.find({ catId: catId });
-    reviews.forEach(async (review) => {
-      await review.delete();
+    //Delete all ratings associated with cat
+    const ratings = await Rating.find({ catId: catId });
+    ratings.forEach(async (rating) => {
+      await rating.delete();
     });
 
     //Delete all posts associated with cat
@@ -114,6 +124,16 @@ router.delete("/:catId", verifyToken, async (req, res) => {
   }
 });
 
+//Get all cats
+
+router.get("/", async (req, res) => {
+  try {
+    const cats = await Cat.find();
+    res.status(200).json(cats);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 //Follower subroutes
 
 const followerRouter = require("./cats/followers");
