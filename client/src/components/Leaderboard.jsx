@@ -19,6 +19,8 @@ export default function Leaderboard () {
 
     const isNotHidden = !isMobile ? "hidden" : "";
 
+    const [selectValue, setSelectValue] = useState("day");
+
     async function fetchLeaderboard () {
         try {
             const leaderboard = await Leaderboards.getFullLeaderboard();
@@ -73,7 +75,7 @@ export default function Leaderboard () {
             )) : <li><p>There are no top cats of all time.</p></li>;
 
 
-            
+            const mobileList = selectValue === "day" ? topDay : selectValue === "month" ? topMonth : topAllTime
 
     return (
 
@@ -105,7 +107,16 @@ export default function Leaderboard () {
             </div>
             {/* Mobile layout, one column */}
             <div className={`leaderboard-mobile ${isNotHidden}`}>
+                <form className="leaderboard-form"> 
+                <select name="leaderboard" id="leaderboard" onChange={(e) => setSelectValue(e.target.value)}>
+                    <option value="day" >Day</option>
+                    <option value="month" >Month</option>
+                    <option value="all" >All Time</option>
+                </select>
+                </form>
                 <ul>
+                    {mobileList}
+
                    
 
                 </ul>

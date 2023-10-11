@@ -377,6 +377,18 @@ input.input-error:focus {
   padding: 1rem;
 }
 
+.post-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 70%;
+  background-color: #333;
+  padding: 2rem;
+  border-radius: 10px;
+}
 
 
 /* leaderboard */
@@ -450,3 +462,19 @@ input.input-error:focus {
   justify-content: center;
   align-content: center;
 }
+
+/* styles for cat grid */
+.cats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  width: 80vw;
+  max-width: 70%;
+  margin: 0 auto;
+  padding: 1rem;
+  justify-items: center;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
+

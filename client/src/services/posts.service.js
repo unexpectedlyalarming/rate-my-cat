@@ -51,6 +51,7 @@ class Posts {
       .get(SERVER_URL + "/posts/" + postId, { withCredentials: true })
       .then((response) => {
         this.post = response.data;
+        return response.data;
       })
       .catch((err) => {
         console.error(err);

@@ -15,6 +15,8 @@ import CatProfile from './components/CatProfile.jsx'
 import CatList from './components/CatList.jsx'
 import Leaderboard from './components/Leaderboard.jsx'
 import AddCat from './components/addCat.jsx'
+import Post from './components/Post.jsx'
+import PostPage from './components/PostPage.jsx'
 
 const queryClient = new QueryClient();
 
@@ -72,7 +74,12 @@ const router = createBrowserRouter([
       {
         path: "/add-cat",
         element: <AddCat />
-      }
+      },
+      {
+        path: "/post/:id",
+        element: <PostPage />
+
+      },
     ],
   },
     {
