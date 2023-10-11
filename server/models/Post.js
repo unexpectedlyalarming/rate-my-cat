@@ -6,6 +6,7 @@ const postSchema = new mongoose.Schema({
   catId: { type: mongoose.Schema.Types.ObjectId, ref: "Cat" },
   image: { type: String, required: true },
   date: { type: Date, default: Date.now, required: true },
+  ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Rating" }],
   reactions: [{ type: mongoose.Schema.Types.ObjectId, ref: "Reaction" }],
 });
 

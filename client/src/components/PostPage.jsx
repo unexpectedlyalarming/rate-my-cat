@@ -55,7 +55,7 @@ export default function PostPage () {
                 <p className="post-date">Posted {date}</p>
             </div>
             <div className="post-body">
-                <img src="./img/placeholder.jpg" alt={post.title} />
+                <img src={post.image} alt={post.title} />
             </div>
 
 

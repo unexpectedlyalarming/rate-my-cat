@@ -10,17 +10,26 @@ export default function CreatePost() {
     const [cats, setCats] = useState(null);
     const [imageValue, setImageValue] = useState(null);
 
+    const [isLoading, setIsLoading] = useState(true);
+
 
 
     //Fetch cats of user
 
     useEffect(() => {
         async function fetchCats () {
+          try {
+
             const cats = await Cats.getAllCatsByUserId(user.id);
             setCats(cats);
+            setIsLoading(false);
+          } catch (err) {
+            console.error(err);
+            setIsLoading(true);
+          }
         }
         fetchCats();
-        }, []);
+        }, [user]);
 
   
     function toggleCreate () {
@@ -50,10 +59,14 @@ export default function CreatePost() {
     const catList = cats?.length > 0 ? cats.map(cat => (
         <option key={cat._id} value={cat._id}>{cat.name}</option>
     )) : <option value="null">Create a cat to post</option>;
+
+    if (isLoading) {
+      return <div className="container"><p>Loading...</p></div> 
+    }
     return (
         <div className="create-post-container">
 
-          <button className="create-post-btn" onClick={toggleCreate}>{togglePost ? "+" : "-"}</button>
+          <button className="create-post-btn" onClick={toggleCreate}>{togglePost ? "Create Post" : "X"}</button>
 
           <form onSubmit={createPost} className={`form-container ${togglePost ? "hidden" : ""}`}>
             <label htmlFor="title">Title</label>

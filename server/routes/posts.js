@@ -30,6 +30,9 @@ router.get("/", async (req, res) => {
           reactions: 1,
         },
       },
+      {
+        $sort: { date: -1 },
+      },
     ]);
 
     res.status(200).json(posts);
@@ -75,12 +78,14 @@ router.get("/:postId", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const userId = jwt.verify(req.cookies.accessToken, secretCode).id;
+    const userId = req.user.id;
     // const userId = req.user.id;
     const catId = req.body.catId;
+
     //Check if catId is owned by userid
     const currentCat = await Cat.findById(catId);
-    if (!currentCat || currentCat.userId !== userId) {
+
+    if (!currentCat || currentCat.userId.toString() !== userId) {
       return res.status(401).json({ message: "You do not own this cat" });
     }
     const title = req.body.title;
@@ -90,15 +95,7 @@ router.post("/", async (req, res) => {
       title: title,
       image: image,
     });
-    const post = await newPost.save();
-    //Add post to user's posts array
-    const user = await User.findById(userId);
-    user.posts.push(post._id);
-    await user.save();
-    //Add post to cat's posts array
-    const cat = await Cat.findById(catId);
-    cat.posts.push(post._id);
-    await cat.save();
+    await newPost.save();
     res.status(200).json({ message: "Post created" });
   } catch (err) {
     res.status(400).json({ message: err.message });

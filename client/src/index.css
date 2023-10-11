@@ -81,6 +81,7 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  z-index: 5;
 }
 button:hover {
   border-color: #646cff;
@@ -476,5 +477,12 @@ input.input-error:focus {
   align-items: center;
   justify-content: center;
   align-content: center;
+}
+
+
+img.cat-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
 }
 

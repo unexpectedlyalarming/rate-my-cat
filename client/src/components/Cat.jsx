@@ -11,7 +11,7 @@ export default function Cat({ cat }) {
         <p>Color: {cat.color}</p>
         <p>Age: {cat.age}</p>
         <p>Followers: {cat.followers.length}</p>
-        <img src={cat.image} alt={cat.name} />
+        <img className="cat-img" src={cat.image} alt={cat.name} />
 
         
 

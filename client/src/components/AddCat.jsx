@@ -56,7 +56,7 @@ export default function AddCat() {
       setErrorMsg(newCat.message);
       throw newCat;
     } else {
-      navigate("/profile");
+      navigate("/")
 
     }
   }

@@ -38,8 +38,8 @@ router.get("/:catId", async (req, res) => {
     const newCats = {
       name: cats.name,
       breed: cats.breed,
+      color: cats.color,
       age: cats.age,
-      bio: cats.bio,
       image: cats.image,
       userId: cats.userId,
       owner: ownerUsername,
@@ -47,6 +47,7 @@ router.get("/:catId", async (req, res) => {
 
       posts: posts,
     };
+
     res.status(200).json(newCats);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -58,13 +59,16 @@ router.get("/:catId", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const userId = req.user.id;
+
     const newCat = new Cat({
       name: req.body.name,
       breed: req.body.breed,
       age: req.body.age,
+      color: req.body.color,
       image: req.body.image,
       userId: userId,
     });
+    await newCat.save();
 
     res.status(200).json(newCat);
   } catch (err) {
