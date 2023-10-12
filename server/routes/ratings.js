@@ -5,7 +5,8 @@ const Rating = require("../models/Rating");
 const Cat = require("../models/Cat");
 const User = require("../models/User");
 const verifyToken = require("./auth");
-
+const Post = require("../models/Post");
+const mongoose = require("mongoose");
 //Get all ratings
 
 router.get("/", async (req, res) => {
@@ -22,8 +23,8 @@ router.get("/", async (req, res) => {
 
 router.get("/cat/:catId", async (req, res) => {
   try {
-    const ratings = await Rating.find({ catId: req.params.catId });
-    res.status(200).json(ratings);
+    //Have to find all posts by catId, then find all ratings by postId
+    res.status(200).json();
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -34,6 +35,42 @@ router.get("/cat/:catId", async (req, res) => {
 router.get("/user/:userId", async (req, res) => {
   try {
     const ratings = await Rating.find({ userId: req.params.userId });
+    res.status(200).json(ratings);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+//Get all ratings by postId
+
+router.get("/post/:postId", async (req, res) => {
+  try {
+    //Aggregate rating, find the username of the userId, and return the rating and username
+
+    const ratings = await Rating.aggregate([
+      {
+        $match: { postId: new mongoose.Types.ObjectId(req.params.postId) },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      {
+        $project: {
+          rating: 1,
+          comment: 1,
+          _id: 1,
+          userId: 1,
+          date: 1,
+          postId: 1,
+          username: "$user.username",
+        },
+      },
+    ]);
     res.status(200).json(ratings);
   } catch (err) {
     res.status(500).json({ message: err.message });

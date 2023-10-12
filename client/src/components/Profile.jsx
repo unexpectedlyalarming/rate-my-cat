@@ -9,6 +9,7 @@ import Posts from '../services/posts.service';
 import { formatDistanceToNow } from 'date-fns';
 import Post from './Post';
 import Cat from './Cat';
+import { CircularProgress } from '@mui/material';
 
 
 //TODO: Send back array of cats and posts with user info
@@ -41,7 +42,7 @@ export default function Profile () {
     });
 
     if (status === "loading") {
-        return <p>Loading...</p>;
+        return <div className="loading-container"><CircularProgress /></div>
       }
       
       if (status === "error") {

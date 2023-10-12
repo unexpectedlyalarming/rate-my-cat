@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import Posts from '../services/posts.service';
 import { UserContext } from '../providers/userContext';
 import Cats from '../services/cats.service';
+import { CircularProgress } from '@mui/material';
 
 export default function CreatePost() {
     const [togglePost, setTogglePost] = useState(true);
@@ -45,6 +46,8 @@ export default function CreatePost() {
         const createdPost = await Posts.createPost(title, image, catId);
         if (createdPost) {
             console.log(createdPost);
+            e.target.reset();
+            toggleCreate();
         } else {
           throw new Error("Post not created");
         }
@@ -61,7 +64,7 @@ export default function CreatePost() {
     )) : <option value="null">Create a cat to post</option>;
 
     if (isLoading) {
-      return <div className="container"><p>Loading...</p></div> 
+      return <div className="loading-container"><CircularProgress /></div>
     }
     return (
         <div className="create-post-container">

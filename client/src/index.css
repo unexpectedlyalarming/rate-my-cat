@@ -81,7 +81,7 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
-  z-index: 5;
+
 }
 button:hover {
   border-color: #646cff;
@@ -486,3 +486,15 @@ img.cat-img {
   border-radius: 10px;
 }
 
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5rem;
+  flex-grow: 1;
+  padding: 5rem;
+  width: 100%;
+  min-height: 50vh;
+}

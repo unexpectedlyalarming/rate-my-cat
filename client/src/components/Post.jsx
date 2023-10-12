@@ -30,13 +30,13 @@ export default function Post ({ post }) {
             <div className="post-header">
                 <Link to={`/post/${post._id}`} className="post-title">{post.title}</Link>
                 <Link to={`/cat/${post.catId}`}className="post-cat">{post.catName}</Link>
-                <p className="post-date">Posted {date}</p>
+                <time className="post-date">Posted {date}</time>
             </div>
-            <Link className="post-body">
+            <Link to={`/post/${post._id}` } className="post-body">
                 <img src={post.image} alt={post.title} />
             </Link>
             <div className="post-footer">
-                <Link>{post.ratings ? post?.ratings?.length : "0"} Ratings (Be the first?)</Link>
+                <Link to={`/post/${post._id}`}   >{post.ratings ? post?.ratings?.length : "0"} Ratings (Be the first?)</Link>
                 <button onClick={handleReact}>React</button>
             </div>
         </div>

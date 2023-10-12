@@ -1,7 +1,7 @@
 //Page that displays all posts
 
 import React, { useEffect, useState } from 'react';
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 import Posts from '../services/posts.service';
 
@@ -9,6 +9,7 @@ import Posts from '../services/posts.service';
 import { Link, useParams } from 'react-router-dom';
 import Post from './Post';
 import { formatDistanceToNow } from 'date-fns';
+import RatingsContainer from './RatingsContainer';
 
 
 export default function PostPage () {
@@ -24,10 +25,15 @@ export default function PostPage () {
         async function fetchPost() {
             try {
                 const post = await Posts.getPostById(id);
-                setPost(post);
-                setDate(formatDistanceToNow(new Date(post.date), { addSuffix: true }));
+                setPost(post[0]);
+                if (!post) {
+                    throw new Error("Post not found");
+                    
+                }
+                const newDate = formatDistanceToNow(new Date(post[0].date), { addSuffix: true })
 
-                console.log(post);
+                setDate(newDate);
+
                 setTimeout(() => {
                     
                     isLoading(false);
@@ -43,22 +49,26 @@ export default function PostPage () {
 
 
     if (loading) {
-        return <div className="container"><p>Loading...</p></div>
+        return <div className="loading-container"><CircularProgress /></div>
     }
 
 
     return (
-        <div className="container post-container">
+        <div className="container">
+
+        <div className="post-container">
             <div className="post-header">
-                <Link to={`/post/${post._id}`} className="post-title">{post.title}</Link>
+                <h2 to={`/post/${post._id}`} className="post-title">{post.title}</h2>
                 <Link to={`/cat/${post.catId}`}className="post-cat">{post.catName}</Link>
-                <p className="post-date">Posted {date}</p>
             </div>
             <div className="post-body">
                 <img src={post.image} alt={post.title} />
+                <time className="post-date">Posted {date}</time>
             </div>
 
 
+        </div>
+        <RatingsContainer id={id} />
         </div>
     )
 }

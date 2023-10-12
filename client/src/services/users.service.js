@@ -62,6 +62,24 @@ class Users {
         console.error(err);
       });
   }
+
+  //Delete user by ID
+
+  deleteUser(userId) {
+    return axios
+      .delete(SERVER_URL + "/users/" + userId, { withCredentials: true })
+      .then((response) => {
+        this.user = response.data;
+        return response.data;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  getCurrentUser() {
+    return this.user;
+  }
 }
 
 export default new Users();

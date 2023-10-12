@@ -1,11 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
-
-import Footer from './components/Footer'
-import Nav from './components/Nav'
 import Post from './components/Post'
 import Posts from './services/posts.service'
-import { useState } from 'react'
 import CreatePost from './components/CreatePost'
+import { CircularProgress } from '@mui/material';
 
 
 
@@ -35,7 +32,8 @@ const postsList = posts?.map((post) => (
   <Post post={post} key={post._id}/>
 )) || [];
 
-if (status === "loading") return <p>Loading...</p>
+if (status === "loading") return <div className="loading-container"><CircularProgress /></div>
+
 if (status === "error") return <p className="error">An error has occured fetching posts.</p>
 
 

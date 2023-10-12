@@ -2,6 +2,7 @@ import React from 'react';
 import Cats from '../services/cats.service';
 import Cat from './Cat';
 import { useQuery } from '@tanstack/react-query';
+import { CircularProgress } from '@mui/material';
 
 export default function CatList() {
 
@@ -31,7 +32,7 @@ export default function CatList() {
 
 
     if (status === "loading") {
-        return <p>Loading...</p>;
+        return <div className="loading-container"><CircularProgress /></div>
       }
       
       if (status === "error") {

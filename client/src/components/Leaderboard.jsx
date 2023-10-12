@@ -8,6 +8,7 @@ import Post from './Post';
 import Cat from './CatProfile';
 import { useMediaQuery } from 'react-responsive';
 import Leaderboards from '../services/leaderboard.service'
+import { CircularProgress } from '@mui/material';
 
 export default function Leaderboard () {
 
@@ -43,7 +44,7 @@ export default function Leaderboard () {
     });
 
     if (status === "loading") {
-        return <p>Loading...</p>;
+        return <div className="loading-container"><CircularProgress /></div>
       }
       
       if (status === "error") {

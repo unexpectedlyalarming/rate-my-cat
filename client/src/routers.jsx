@@ -3,7 +3,6 @@ import App from './App.jsx'
 import './index.css'
 import { Navigate, Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Nav from './components/Nav.jsx'
-import Footer from './components/Footer.jsx'
 import { UserProvider } from './providers/userContext.js'
 import React, { useState } from 'react'
 import Login from './components/Login.jsx'
@@ -30,7 +29,6 @@ function Routers () {
       <>
     <Nav />
     <Outlet />
-    <Footer />
     </>
   )
 }

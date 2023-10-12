@@ -5,6 +5,7 @@ import { UserContext } from '../providers/userContext';
 import { Link, useParams } from 'react-router-dom';
 import Cats from '../services/cats.service';
 import Post from './Post';
+import { CircularProgress } from '@mui/material';
 
 
 export default function CatProfile () {
@@ -37,7 +38,7 @@ export default function CatProfile () {
     });
 
     if (status === "loading") {
-        return <p>Loading...</p>;
+        return <div className="loading-container"><CircularProgress /></div>
       }
       
       if (status === "error") {

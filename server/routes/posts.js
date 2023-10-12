@@ -1,13 +1,14 @@
 //All posts are associated with a cat
 const express = require("express");
 const router = express.Router();
+const axios = require("axios");
 const Post = require("../models/Post");
 const Cat = require("../models/Cat");
 const User = require("../models/User");
 const verifyToken = require("./auth");
 const jwt = require("jsonwebtoken");
 const secretCode = require("../secretCode");
-
+const mongoose = require("mongoose");
 //Get all posts
 router.get("/", async (req, res) => {
   try {
@@ -46,6 +47,7 @@ router.get("/", async (req, res) => {
 router.get("/cat/:catId", async (req, res) => {
   try {
     const posts = await Post.find({ catId: req.params.catId });
+
     res.json(posts);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -67,8 +69,37 @@ router.get("/user/:userId", async (req, res) => {
 
 router.get("/:postId", async (req, res) => {
   try {
-    const posts = await Post.findById(req.params.postId);
-    res.json(posts);
+    const id = req.params.postId.toString();
+
+    const postId = new mongoose.Types.ObjectId(id);
+
+    //aggregate, return post and cat name as one object
+
+    const post = await Post.aggregate([
+      {
+        $match: { _id: postId },
+      },
+      {
+        $lookup: {
+          from: "cats",
+          localField: "catId",
+          foreignField: "_id",
+          as: "cat",
+        },
+      },
+      {
+        $project: {
+          catName: "$cat.name",
+          title: 1,
+          image: 1,
+          catId: 1,
+          date: 1,
+          reactions: 1,
+        },
+      },
+    ]);
+
+    res.status(200).json(post);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -90,6 +121,12 @@ router.post("/", async (req, res) => {
     }
     const title = req.body.title;
     const image = req.body.image;
+    //Fetch image url and check if it's valid
+    const response = await axios.get(image);
+    if (response.status !== 200) {
+      return res.status(400).json({ message: "Invalid image url" });
+    }
+
     const newPost = new Post({
       catId: catId,
       title: title,
