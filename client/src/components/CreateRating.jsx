@@ -1,7 +1,7 @@
 import { CircularProgress, Rating } from '@mui/material';
 import React, { useState } from 'react';
 import Ratings from '../services/ratings.service';
-import { TextareaAutosize } from '@mui/material/TextareaAutosize'
+import { TextareaAutosize } from '@mui/material'
 
 export default function RatingComponent ({ id }) {
     const [currentRating, setCurrentRating] = useState(0);
@@ -30,7 +30,7 @@ export default function RatingComponent ({ id }) {
     }
     if (isNaN(currentRating)) setCurrentRating(0);
 
-    if ( !currentRating ) return <div className="container"><CircularProgress /></div>;
+    if ( isNaN(currentRating)) return <div className="container"><CircularProgress /></div>;
 
 
     
@@ -43,7 +43,7 @@ export default function RatingComponent ({ id }) {
                     <label htmlFor="rating">{`${currentRating} stars (${currentRating * 2}/10)`}</label>
                     <Rating name="rating" value={currentRating} precision={0.5} onChange={(event, newValue) => setCurrentRating(newValue)} />
                     <label htmlFor="comment">Comment</label>
-                    <TextareaAutosize name="comment" id="comment" minRows={3} minColumns={5} placeholder="Comment" required></TextareaAutosize>
+                    <TextareaAutosize name="comment" id="comment" minRows={3} placeholder="Comment" required></TextareaAutosize>
                     <button type="submit" >Submit</button>
  
                     </form>

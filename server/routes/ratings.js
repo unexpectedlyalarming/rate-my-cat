@@ -93,12 +93,7 @@ router.get("/:ratingId", async (req, res) => {
 router.post("/", verifyToken, async (req, res) => {
   try {
     const userId = req.user.id;
-    const catId = req.body.catId;
-    //Check if catId is owned by userid
-    const currentCat = await Cat.findById(catId);
-    if (currentCat.userId !== userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
+    const postId = req.body.postId;
     const rating = req.body.rating;
     const comment = req.body.comment;
 
@@ -110,7 +105,7 @@ router.post("/", verifyToken, async (req, res) => {
 
     const newRating = new Rating({
       userId: userId,
-      catId: catId,
+      postId: postId,
       rating: rating,
       comment: comment,
     });

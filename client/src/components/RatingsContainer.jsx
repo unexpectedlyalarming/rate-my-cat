@@ -29,8 +29,8 @@ const RatingsContainer = ({id}) => {
         refetchInterval: 7000,
     });
     
-    const ratingsList = ratings?.length > 0 ? ratings?.map((rating) => (
-      <RatingComponent rating={rating} key={rating._id}/>
+    const ratingsList = ratings?.length > 0 ? ratings?.map((currentRating) => (
+      <RatingComponent rating={currentRating} key={currentRating._id}/>
     )) : <p>No ratings yet!</p>;
 
 
