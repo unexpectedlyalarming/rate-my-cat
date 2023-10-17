@@ -4,7 +4,7 @@ import { UserContext } from '../providers/userContext';
 import Cats from '../services/cats.service';
 import { CircularProgress } from '@mui/material';
 
-export default function CreatePost() {
+export default function CreatePost({toggleFilter}) {
     const [togglePost, setTogglePost] = useState(true);
     const [toggleImageType, setToggleImageType] = useState("url");
     const {user, setUser } = useContext(UserContext);
@@ -35,6 +35,7 @@ export default function CreatePost() {
   
     function toggleCreate () {
       setTogglePost(!togglePost)
+      toggleFilter();
     }
 
     async function createPost (e) {

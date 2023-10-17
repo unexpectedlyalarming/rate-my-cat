@@ -4,6 +4,7 @@ import Posts from '../services/posts.service';
 import { Link } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
+import CommentIcon from '@mui/icons-material/Comment';
 export default function Post ({ post }) {
 
     const navigate = useNavigate();
@@ -36,7 +37,8 @@ export default function Post ({ post }) {
                 <img src={post.image} alt={post.title} />
             </Link>
             <div className="post-footer">
-                <Link to={`/post/${post._id}`}   >{post.ratings ? post?.ratings?.length : "0"} Ratings (Be the first?)</Link>
+                <Link to={`/post/${post._id}`}   ><p>{post.ratings ? post?.ratings?.length : "0"}</p> <CommentIcon /> </Link>
+
                 <button onClick={handleReact}>React</button>
             </div>
         </div>

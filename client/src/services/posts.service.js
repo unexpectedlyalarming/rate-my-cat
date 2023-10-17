@@ -19,6 +19,34 @@ class Posts {
       });
   }
 
+  //Get posts by most ratings
+
+  getPostsByMostRatings() {
+    return axios
+      .get(SERVER_URL + "/posts/ratings", { withCredentials: true })
+      .then((response) => {
+        this.post = response.data;
+        return this.post;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  //Get top posts of day
+
+  getTopPostsOfDay() {
+    return axios
+      .get(SERVER_URL + "/posts/top/day", { withCredentials: true })
+      .then((response) => {
+        this.post = response.data;
+        return this.post;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
   //Get all posts by catId
 
   getAllPostsByCatId(catId) {

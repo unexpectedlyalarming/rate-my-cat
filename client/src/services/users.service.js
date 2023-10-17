@@ -48,12 +48,29 @@ class Users {
   }
 
   //Update profile image and bio
-  updateProfile(image, bio) {
+  updateProfilePicture(image) {
+    console.log(image);
     return axios
       .patch(
-        SERVER_URL + "/auth/update-profile",
+        SERVER_URL + "/users/profile/image",
+        image,
+
         {
-          image,
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+  updateProfileBio(bio) {
+    return axios
+      .patch(
+        SERVER_URL + "/users/profile/bio/",
+        {
           bio,
         },
         { withCredentials: true }

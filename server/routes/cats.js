@@ -143,6 +143,18 @@ router.get("/", async (req, res) => {
 
 const followerRouter = require("./cats/followers");
 
+//Filter cats by breed
+
+router.get("/breed/:filter", async (req, res) => {
+  try {
+    const filter = req.params.filter;
+    const cats = await Cat.find({ breed: filter });
+    res.status(200).json(cats);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 router.use("/:catId/followers", followerRouter);
 
 module.exports = router;

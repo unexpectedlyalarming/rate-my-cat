@@ -3,9 +3,10 @@ import React from 'react';
 import { useContext } from 'react';
 import { UserContext } from '../providers/userContext';
 import { formatDistanceToNow } from 'date-fns';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Rating } from '@mui/material';
 
 import Ratings from '../services/ratings.service';
+import { Link } from 'react-router-dom';
 
 export default function RatingComponent ({ rating }) {
     const { user } = useContext(UserContext);
@@ -37,8 +38,8 @@ export default function RatingComponent ({ rating }) {
 
         <div className="rating-container">
             <div className="rating-header">
-                <h3 className="rating-title">{rating.rating}</h3>
-                <p className="rating-author">{rating.username}</p>
+            <Rating value={rating.rating / 2} precision={0.5} readOnly />
+                <Link to={`/profile/${rating.userId}`} className="rating-author">{rating.username}</Link>
                 <time className="rating-date">Posted {date}</time>
             </div>
             <p className="rating-body">{rating.comment}</p>

@@ -6,6 +6,17 @@ const User = require("../models/User");
 const verifyToken = require("./auth");
 const Rating = require("../models/Rating");
 const Post = require("../models/Post");
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/images/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+const upload = multer({ storage: storage });
 //Get all users
 
 router.get("/", async (req, res) => {
@@ -43,19 +54,30 @@ router.get("/profile/:userId", async (req, res) => {
   }
 });
 
-//Update user profile (Only allow bio and profile picture to be updated)
+//Update user profile image
 
-router.patch("/profile/:userId", async (req, res) => {
+router.patch("/profile/image", upload.single("image"), async (req, res) => {
   try {
-    const users = await User.findById(req.params.userId);
-    //Check for bio
-    if (req.body.bio) {
-      users.bio = req.body.bio;
-    }
+    const users = await User.findById(req.user.id);
+
     //Check for profile picture
-    if (req.body.image) {
-      users.image = req.body.image;
+    if (req.file) {
+      users.image = req.file.path.replace("public", "");
+      users.image = req.protocol + "://" + req.get("host") + users.image;
     }
+    await users.save();
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+//Update user profile bio
+
+router.patch("/profile/bio", async (req, res) => {
+  try {
+    const users = await User.findById(req.user.id);
+    if (req.body.bio) users.bio = req.body.bio;
     await users.save();
     res.status(200).json(users);
   } catch (err) {

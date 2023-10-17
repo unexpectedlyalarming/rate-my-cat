@@ -353,6 +353,13 @@ input.input-error:focus {
   width: 100%;
   gap: 1rem;
 }
+.post-footer a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+}
 .post-body img {
   max-width: 100%;
   height: auto;
@@ -497,4 +504,78 @@ img.cat-img {
   padding: 5rem;
   width: 100%;
   min-height: 50vh;
+}
+
+/* styles for ratings */
+
+.rating-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 70%;
+  background-color: #333;
+  padding: 2rem;
+  border-radius: 10px;
+}
+.rating-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+}
+.rating-title {
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+.rating-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+}
+time {
+  font-size: .8rem;
+  font-weight: 500;
+  font-style: italic;
+}
+
+/*Header */
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  width: 100%;
+  max-width: 100%;
+  padding: 2rem;
+  border-radius: 10px;
+}
+.filter-form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  max-width: 100%;
+  background-color: #333;
+  padding: 1rem;
+  border-radius: 10px;
+}
+.filter-form button {
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  font-size: 1rem;
+}
+button.create-post-btn {
+  background-color: #333;
+
 }

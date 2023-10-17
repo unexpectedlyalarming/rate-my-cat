@@ -16,6 +16,7 @@ import Leaderboard from './components/Leaderboard.jsx'
 import AddCat from './components/addCat.jsx'
 import Post from './components/Post.jsx'
 import PostPage from './components/PostPage.jsx'
+import EditProfile from './components/EditProfile.jsx'
 
 const queryClient = new QueryClient();
 
@@ -78,6 +79,10 @@ const router = createBrowserRouter([
         element: <PostPage />
 
       },
+      {
+        path: "/edit-profile",
+        element: <EditProfile />,
+      }
     ],
   },
     {

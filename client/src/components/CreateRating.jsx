@@ -36,8 +36,8 @@ export default function RatingComponent ({ id }) {
     
         return (
     
-            <div className="form-container">
-                <form className="rating-form" onSubmit={createRating} >
+
+                <form className="rating-form form-container" onSubmit={createRating} >
 
 
                     <label htmlFor="rating">{`${currentRating} stars (${currentRating * 2}/10)`}</label>
@@ -47,6 +47,6 @@ export default function RatingComponent ({ id }) {
                     <button type="submit" >Submit</button>
  
                     </form>
-            </div>
+
         )
     }

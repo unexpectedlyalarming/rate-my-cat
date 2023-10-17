@@ -14,6 +14,7 @@ app.use(morgan("tiny"));
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);
+
   next();
 });
 
@@ -29,8 +30,24 @@ app.use(
   cors({
     origin: "*",
     credentials: true,
+
+    methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    AccessControlAllowHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+app.options("*", cors());
+
+app.options("/users/profile/image", (req, res) => {
+  res.header("Access-Control-Allow-Origin", req.headers.origin);
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PATCH, DELETE, OPTIONS"
+  );
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.header("Access-Control-Allow-Credentials", true);
+  res.send();
+});
 
 app.use(
   session({

@@ -38,11 +38,11 @@ const RatingsContainer = ({id}) => {
 
 
     return (
-        <div >
+        <>
             <CreateRating id={id}/>
             {ratingsList}
 
-        </div>
+        </>
     );
 };
 

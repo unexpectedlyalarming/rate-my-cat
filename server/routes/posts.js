@@ -5,6 +5,7 @@ const axios = require("axios");
 const Post = require("../models/Post");
 const Cat = require("../models/Cat");
 const User = require("../models/User");
+const Rating = require("../models/Rating");
 const verifyToken = require("./auth");
 const jwt = require("jsonwebtoken");
 const secretCode = require("../secretCode");
@@ -20,6 +21,12 @@ router.get("/", async (req, res) => {
           foreignField: "_id",
           as: "cat",
         },
+        $lookup: {
+          from: "ratings",
+          localField: "_id",
+          foreignField: "postId",
+          as: "ratings",
+        },
       },
       {
         $project: {
@@ -29,10 +36,96 @@ router.get("/", async (req, res) => {
           catId: 1,
           date: 1,
           reactions: 1,
+          ratings: "$ratings.rating",
         },
       },
       {
         $sort: { date: -1 },
+      },
+    ]);
+
+    res.status(200).json(posts);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+//Get all posts, sort by most ratings
+
+router.get("/ratings", async (req, res) => {
+  try {
+    const posts = await Post.aggregate([
+      {
+        $lookup: {
+          from: "cats",
+          localField: "catId",
+          foreignField: "_id",
+          as: "cat",
+        },
+        $lookup: {
+          from: "ratings",
+          localField: "_id",
+          foreignField: "postId",
+          as: "ratings",
+        },
+      },
+      {
+        $project: {
+          catName: "$cat.name",
+          title: 1,
+          image: 1,
+          catId: 1,
+          date: 1,
+          reactions: 1,
+          ratings: "$ratings.rating",
+          numRatings: { $size: "$ratings" },
+        },
+      },
+      {
+        $sort: { numRatings: -1 },
+      },
+    ]);
+
+    res.status(200).json(posts);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+//Get top posts of day
+
+router.get("/top/day", async (req, res) => {
+  try {
+    const posts = await Post.aggregate([
+      {
+        $match: {
+          date: {
+            $gte: new Date(new Date().setDate(new Date().getDate() - 1)),
+          },
+        },
+      },
+
+      {
+        $lookup: {
+          from: "cats",
+          localField: "catId",
+          foreignField: "_id",
+          as: "cat",
+        },
+      },
+
+      {
+        $project: {
+          catName: "$cat.name",
+          title: 1,
+          image: 1,
+          catId: 1,
+          date: 1,
+          ratings: 1,
+        },
+      },
+      {
+        $sort: { ratings: -1 },
       },
     ]);
 

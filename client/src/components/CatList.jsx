@@ -9,6 +9,9 @@ export default function CatList() {
     async function fetchCats () {
         try {
             const cats = await Cats.getAllCats();
+            if (!cats) {
+                return 0;
+            }
 
             return cats;
         } catch (err) {

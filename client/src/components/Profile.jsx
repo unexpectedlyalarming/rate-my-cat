@@ -17,6 +17,8 @@ export default function Profile () {
     
     //Set up react query for fetching user info from URL params
     const {id} = useParams();
+
+    const { user } = useContext(UserContext);
     
     
     async function fetchProfile () {
@@ -24,7 +26,7 @@ export default function Profile () {
             const profile = await Users.getProfileById(id);
             return profile;
         } catch (err) {
-            console.error(err)
+            console.error(err);
         }
     }
     
@@ -59,7 +61,8 @@ const postsList = (profile && profile?.posts.length > 0) ? profile?.posts.map(po
     <Post post={post} key={post.id}/>
 )) : <p>No posts yet!</p>;
 
-const isUsersProfile = (profile?.user?._id === id) ? true : false;
+const isUsersProfile = (profile?.user?._id === user.id) ? true : false;
+
 
     return (
         <div className="container profile-container">
@@ -68,6 +71,7 @@ const isUsersProfile = (profile?.user?._id === id) ? true : false;
                 <p className="profile-date">Joined {date}</p>
                 <p className="profile-bio">{profile?.user?.bio}</p>
                 <p className="profile-ratings">Total ratings: {profile?.ratings?.length}</p>
+                {isUsersProfile && <div className="edit-profile"><Link to="/edit-profile">Edit profile</Link></div>}
                 </div>
                 <h2>Cats</h2>
                 {isUsersProfile && <p className="profile-add-cat"><Link to="/add-cat">Add a cat</Link></p>}

@@ -3,16 +3,44 @@ import Post from './components/Post'
 import Posts from './services/posts.service'
 import CreatePost from './components/CreatePost'
 import { CircularProgress } from '@mui/material';
-
+import { useState } from 'react';
 
 
 function App() {
 
+  const [isHidden, setIsHidden] = useState(false);
+
+  const [filter, setFilter] = useState("recent");
+
+
 
 
   async function fetchPosts() {
-    const posts = await Posts.getAllPosts();
+    let posts;
+    if (filter === "recent") {
+      posts = await Posts.getAllPosts();
+    } else if (filter === "most") {
+      posts = await Posts.getPostsByMostRatings();
+    } else if (filter === "top-day") {
+      posts = await Posts.getTopPostsOfDay();
+    }
+
     return posts;
+  }
+  async function filterPosts(e) {
+    try {
+
+      e.preventDefault();
+      setFilter(e.target.filter.value);
+      await refetch();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function toggleFilter () {
+    setIsHidden(!isHidden);
+
   }
 
 
@@ -20,12 +48,12 @@ function App() {
 
   const {
     status,
-    error,
     data: posts,
+    refetch,
 } = useQuery({
     queryKey: ["posts"],
     queryFn: fetchPosts,
-    refetchInterval: 7000,
+    refetchInterval: 4000,
 });
 
 const postsList = posts?.map((post) => (
@@ -42,7 +70,18 @@ if (status === "error") return <p className="error">An error has occured fetchin
     <>
 
       <div className="container">
-        <CreatePost />  
+        <div className="app-header">
+
+        <CreatePost toggleFilter={toggleFilter}/>  
+        <form className={isHidden ? "hidden" : "filter-form"} onSubmit={filterPosts}>
+      <select name="filter" id="filter">
+        <option value="recent">Recent</option>
+        <option value="most">Most Ratings</option>
+        <option value="top-day">Top of day</option>
+      </select>
+        <button type="submit" >Filter</button>
+        </form>
+        </div>
         <div className="posts-container">
         {postsList}
           </div>
