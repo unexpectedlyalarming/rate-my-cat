@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import Posts from '../services/posts.service';
 import { UserContext } from '../providers/userContext';
 import Cats from '../services/cats.service';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Alert } from '@mui/material';
 
 export default function CreatePost({toggleFilter}) {
     const [togglePost, setTogglePost] = useState(true);
@@ -12,7 +12,15 @@ export default function CreatePost({toggleFilter}) {
     const [imageValue, setImageValue] = useState(null);
 
     const [isLoading, setIsLoading] = useState(true);
+    const [alert, setAlert ] = useState(false);
 
+    async function toggleAlert () {
+      setAlert(true);
+      setTimeout(() => {
+          setAlert(false);
+      }, 5000);
+
+    }
 
 
     //Fetch cats of user
@@ -89,7 +97,8 @@ export default function CreatePost({toggleFilter}) {
               <option value="upload">Upload</option>
             </select>
             {inputType}
-            <button type="submit">Create post</button>
+            <button type="submit" disabled={alert}  >Create post</button>
+            <Alert severity="success" className={`alert ${alert ? "" : "hidden"}`}>Post created!</Alert>
             </form>
 
         </div>

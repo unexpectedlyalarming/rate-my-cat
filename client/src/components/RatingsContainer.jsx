@@ -19,6 +19,7 @@ const RatingsContainer = ({id}) => {
     }
 
 
+
     const {
         status,
         error,
@@ -28,6 +29,7 @@ const RatingsContainer = ({id}) => {
         queryFn: fetchRatings,
         refetchInterval: 7000,
     });
+
     
     const ratingsList = ratings?.length > 0 ? ratings?.map((currentRating) => (
       <RatingComponent rating={currentRating} key={currentRating._id}/>

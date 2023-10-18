@@ -13,8 +13,4 @@ const reactionSchema = new Schema({
     ref: "User",
     required: true,
   },
-  reaction: {
-    type: String,
-    required: true,
-  },
 });

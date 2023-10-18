@@ -95,6 +95,7 @@ class Ratings {
       .delete(SERVER_URL + "/ratings/" + ratingId, { withCredentials: true })
       .then((response) => {
         this.ratings = response.data;
+        return response.data;
       })
       .catch((err) => {
         return new Error(err.response.data.message);

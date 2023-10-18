@@ -53,7 +53,7 @@ function App() {
 } = useQuery({
     queryKey: ["posts"],
     queryFn: fetchPosts,
-    refetchInterval: 4000,
+    refetchInterval: 2000,
 });
 
 const postsList = posts?.map((post) => (

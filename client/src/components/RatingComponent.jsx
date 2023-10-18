@@ -1,15 +1,21 @@
 
 import React from 'react';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { UserContext } from '../providers/userContext';
 import { formatDistanceToNow } from 'date-fns';
-import { CircularProgress, Rating } from '@mui/material';
-
+import { Alert, CircularProgress, Rating } from '@mui/material';
 import Ratings from '../services/ratings.service';
 import { Link } from 'react-router-dom';
 
 export default function RatingComponent ({ rating }) {
     const { user } = useContext(UserContext);
+    const [alert, setAlert] = useState(false);
+
+    async function toggleAlert () {
+        setAlert(true);
+
+    }
+
 
 
     const date = formatDistanceToNow(new Date(rating.date), { addSuffix: true })
@@ -22,6 +28,7 @@ export default function RatingComponent ({ rating }) {
         try {
             const deletedRating = await Ratings.deleteRating(rating._id);
             if (deletedRating) {
+                toggleAlert();
                 console.log(deletedRating);
             } else {
                 throw new Error("Rating not deleted");
@@ -30,6 +37,7 @@ export default function RatingComponent ({ rating }) {
             console.error(err);
         }
     }
+
 
     if (!rating) return <div className="container"><CircularProgress /></div>;
 
@@ -44,6 +52,7 @@ export default function RatingComponent ({ rating }) {
             </div>
             <p className="rating-body">{rating.comment}</p>
             {user?.id === rating.userId ? <button className="delete-rating" onClick={handleDelete}>Delete</button> : null}
+            <Alert severity="success" className={`alert ${alert ? "" : "hidden"}`}>Rating deleted!</Alert>
 
         </div>
     )
