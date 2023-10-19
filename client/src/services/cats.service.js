@@ -52,7 +52,12 @@ class Cats {
 
   createCat(cat) {
     return axios
-      .post(SERVER_URL + "/cats", cat, { withCredentials: true })
+      .post(SERVER_URL + "/cats", cat, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((response) => {
         this.cat = response.data;
       })

@@ -56,9 +56,13 @@ router.get("/user/:userId", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   try {
-    const userId = req.body.userId;
+    const userId = req.user.id;
     const postId = req.body.postId;
-
+    const reactionExists = await Reaction.findOne({ userId, postId });
+    if (reactionExists) {
+      res.status(400).json({ message: "Reaction already exists" });
+      return;
+    }
     const reaction = await Reaction.create({ userId, postId });
 
     res.status(200).json(reaction);
@@ -69,20 +73,39 @@ router.post("/", async (req, res, next) => {
 
 //Delete a reaction
 
-router.delete("/:reactionId", async (req, res, next) => {
+router.delete("/:postId", async (req, res, next) => {
   try {
-    const userId = new mongoose.Types.ObjectId(req.body.userId);
-    const reactionId = req.params.reactionId;
+    const userId = req.user.id;
+    const postId = req.params.postId;
 
-    const reaction = await Reaction.findById(reactionId);
+    const reaction = await Reaction.findOne({ userId, postId });
 
-    if (userId === reaction.userId) {
-      await reaction.remove();
+    if (reaction) {
+      await Reaction.findByIdAndDelete(reaction._id);
       res.status(200).json({ message: "Reaction deleted" });
     } else {
-      res
-        .status(400)
-        .json({ message: "You are not authorized to delete this reaction" });
+      res.status(400).json({
+        message:
+          "You are not authorized to delete this reaction or it does not exist",
+      });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+//Check if reaction exists
+
+router.get("/check/:postId", async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const postId = req.params.postId;
+
+    const reactionExists = await Reaction.findOne({ userId, postId });
+    if (reactionExists) {
+      res.status(200).json("true");
+    } else {
+      res.status(400).json("false");
     }
   } catch (err) {
     res.status(500).json(err);

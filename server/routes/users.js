@@ -62,8 +62,9 @@ router.patch("/profile/image", upload.single("image"), async (req, res) => {
 
     //Check for profile picture
     if (req.file) {
-      users.image = req.file.path.replace("public", "");
-      users.image = req.protocol + "://" + req.get("host") + users.image;
+      users.image = `${req.protocol}://${req.get("host")}/images/${
+        req.file.filename
+      }`;
     }
     await users.save();
     res.status(200).json(users);

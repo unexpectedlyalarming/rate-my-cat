@@ -41,14 +41,23 @@ router.get("/", async (req, res) => {
         },
       },
       {
+        $lookup: {
+          from: "reactions",
+          localField: "_id",
+          foreignField: "postId",
+          as: "reactions",
+        },
+      },
+
+      {
         $project: {
           catName: "$cat.name",
           title: 1,
           image: 1,
           catId: 1,
           date: 1,
-          reactions: 1,
           ratings: "$ratings.rating",
+          reactions: "$reactions",
         },
       },
       {
@@ -191,6 +200,12 @@ router.get("/:postId", async (req, res) => {
           foreignField: "_id",
           as: "cat",
         },
+        $lookup: {
+          from: "reactions",
+          localField: "_id",
+          foreignField: "postId",
+          as: "reactions",
+        },
       },
       {
         $project: {
@@ -199,7 +214,7 @@ router.get("/:postId", async (req, res) => {
           image: 1,
           catId: 1,
           date: 1,
-          reactions: 1,
+          reactions: "$reactions",
         },
       },
     ]);
@@ -214,6 +229,7 @@ router.get("/:postId", async (req, res) => {
 
 router.post("/", upload.single("image"), async (req, res) => {
   try {
+    console.log("Made past middleware");
     const userId = req.user.id;
     // const userId = req.user.id;
     const catId = req.body.catId;
@@ -225,11 +241,14 @@ router.post("/", upload.single("image"), async (req, res) => {
       return res.status(401).json({ message: "You do not own this cat" });
     }
     const title = req.body.title;
-    let image = req.body.image;
-    //Fetch image url and check if it's valid
-    const response = await axios.get(image);
-    if (response.status !== 200) {
-      return res.status(400).json({ message: "Invalid image url" });
+    let image;
+    if (req.body.image) {
+      image = req.body.image;
+      //Fetch image url and check if it's valid
+      const response = await axios.get(image);
+      if (response.status !== 200) {
+        return res.status(400).json({ message: "Invalid image url" });
+      }
     }
 
     //If image is a file, put in local storage and store url
@@ -237,7 +256,7 @@ router.post("/", upload.single("image"), async (req, res) => {
       image = `${req.protocol}://${req.get("host")}/images/${
         req.file.filename
       }`;
-      console.log(image);
+      console.log("Received image file");
     }
 
     const newPost = new Post({
@@ -245,6 +264,7 @@ router.post("/", upload.single("image"), async (req, res) => {
       title: title,
       image: image,
     });
+    console.log("New post!" + newPost);
     await newPost.save();
     res.status(200).json({ message: "Post created" });
   } catch (err) {

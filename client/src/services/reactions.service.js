@@ -6,7 +6,7 @@ class Reactions {
 
   getAllReactionsByPostId(postId) {
     return axios
-      .get(`${SERVER_URL}/reactions/post/${postId}`)
+      .get(`${SERVER_URL}/reactions/post/${postId}`, { withCredentials: true })
       .then((res) => {
         return res.data;
       })
@@ -18,7 +18,7 @@ class Reactions {
 
   getAllReactionsByUserId(userId) {
     return axios
-      .get(`${SERVER_URL}/reactions/user/${userId}`)
+      .get(`${SERVER_URL}/reactions/user/${userId}`, { withCredentials: true })
       .then((res) => {
         return res.data;
       })
@@ -30,7 +30,7 @@ class Reactions {
 
   getAllReactionsByCatId(catId) {
     return axios
-      .get(`${SERVER_URL}/reactions/cat/${catId}`)
+      .get(`${SERVER_URL}/reactions/cat/${catId}`, { withCredentials: true })
       .then((res) => {
         return res.data;
       })
@@ -41,7 +41,11 @@ class Reactions {
   //Create a reaction
   createReaction(postId) {
     return axios
-      .post(`${SERVER_URL}/reactions`, postId)
+      .post(
+        `${SERVER_URL}/reactions`,
+        { postId: postId },
+        { withCredentials: true }
+      )
       .then((res) => {
         return res.data;
       })
@@ -53,7 +57,20 @@ class Reactions {
   //Delete a reaction
   deleteReaction(reactionId) {
     return axios
-      .delete(`${SERVER_URL}/reactions/${reactionId}`)
+      .delete(`${SERVER_URL}/reactions/${reactionId}`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        return new Error(err);
+      });
+  }
+  //Get reaction by postId
+  checkReaction(postId) {
+    return axios
+      .get(`${SERVER_URL}/reactions/check/${postId}`, { withCredentials: true })
       .then((res) => {
         return res.data;
       })

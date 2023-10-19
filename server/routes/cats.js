@@ -7,7 +7,17 @@ const verifyToken = require("./auth");
 const Ratings = require("../models/Rating");
 const post = require("../models/Post");
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/images/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+const upload = multer({ storage: storage });
 //Get all cats by userId
 
 router.get("/user/:userId", async (req, res) => {
@@ -56,16 +66,31 @@ router.get("/:catId", async (req, res) => {
 
 //Create new cat
 
-router.post("/", async (req, res) => {
+router.post("/", upload.single("image"), async (req, res) => {
   try {
     const userId = req.user.id;
+
+    let image;
+
+    if (req.body.image) {
+      image = req.body.image;
+      const response = await axios.get(image);
+      if (response.status !== 200) {
+        return res.status(400).json({ message: "Invalid image url" });
+      }
+    }
+    if (req.file) {
+      image = `${req.protocol}://${req.get("host")}/images/${
+        req.file.filename
+      }`;
+    }
 
     const newCat = new Cat({
       name: req.body.name,
       breed: req.body.breed,
       age: req.body.age,
       color: req.body.color,
-      image: req.body.image,
+      image: image,
       userId: userId,
     });
     await newCat.save();

@@ -67,6 +67,7 @@ const isUsersProfile = (profile?.user?._id === user.id) ? true : false;
     return (
         <div className="container profile-container">
             <div className="profile-header">
+                <img src={profile?.user?.image} alt="profile" className="profile-image"/>
                 <h2>{profile?.user?.username}</h2>
                 <p className="profile-date">Joined {date}</p>
                 <p className="profile-bio">{profile?.user?.bio}</p>
