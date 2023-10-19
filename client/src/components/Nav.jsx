@@ -30,6 +30,7 @@ const loggedOut = (
                 <li><Link to="/register">Register</Link></li>
             </ul>
         </nav>
+        <button className="nav-button" onClick={toggleMobileMenu}>Menu</button>
     </div>
     );
         if (!user) return loggedOut;
@@ -40,6 +41,7 @@ const loggedOut = (
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/cats">Cats</Link></li>
                 <li><Link to="/leaderboard">Leaderboard</Link></li>
+                <li><Link to="/facts">Cat facts</Link></li>
             </ul>
             <ul className="logged-in">
                 <li><Link to={`/profile/${user?.id?.toString()}`}>Profile</Link></li>

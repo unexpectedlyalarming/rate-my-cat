@@ -7,9 +7,8 @@ import { CircularProgress, Alert } from '@mui/material';
 export default function CreatePost({toggleFilter}) {
     const [togglePost, setTogglePost] = useState(true);
     const [toggleImageType, setToggleImageType] = useState("url");
-    const {user, setUser } = useContext(UserContext);
+    const {user} = useContext(UserContext);
     const [cats, setCats] = useState(null);
-    const [imageValue, setImageValue] = useState(null);
 
     const [isLoading, setIsLoading] = useState(true);
     const [alert, setAlert ] = useState(false);
@@ -47,26 +46,31 @@ export default function CreatePost({toggleFilter}) {
     }
 
     async function createPost (e) {
-        e.preventDefault();
-        const title = e.target.title.value;
-        const image = toggleImageType === "upload" ? e.target.image.files[0] : imageValue;
-        const catId = e.target.cat.value;
-        const post = {title, image, catId};
+      e.preventDefault();
+      const title = e.target.title.value;
+      const image = toggleImageType === "url" ? e.target.imageURL.value : e.target.imageUpload.files[0];
+      const catId = e.target.cat.value;
+
+
+      console.log(image)
+      try {
         const createdPost = await Posts.createPost(title, image, catId);
         if (createdPost) {
-            console.log(createdPost);
-            e.target.reset();
-            toggleCreate();
+          console.log(createdPost);
+          e.target.reset();
+          toggleCreate();
         } else {
           throw new Error("Post not created");
         }
+      } catch (err) {
+        console.error(err);
       }
+    }
   
     function handleSelectionType (e) {
       setToggleImageType(e.target.value.toString());
     }
 
-    const inputType = toggleImageType === "upload" ? <input key="upload" type="file" name="image" id="image" /> : <input key="url" type="text" name="image" id="image" onChange={(e) => setImageValue(e.target.value)}/>;
 
     const catList = cats?.length > 0 ? cats.map(cat => (
         <option key={cat._id} value={cat._id}>{cat.name}</option>
@@ -96,7 +100,8 @@ export default function CreatePost({toggleFilter}) {
               <option value="url">URL</option>
               <option value="upload">Upload</option>
             </select>
-            {inputType}
+            <input type="file" name="imageUpload" id="imageUpload" className={toggleImageType === "url" ? "hidden" : "" }/>
+            <input type="text" name="imageURL" id="imageURL"  className={toggleImageType === "upload" ? "hidden" : "" } />
             <button type="submit" disabled={alert}  >Create post</button>
             <Alert severity="success" className={`alert ${alert ? "" : "hidden"}`}>Post created!</Alert>
             </form>

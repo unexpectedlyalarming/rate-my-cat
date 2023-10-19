@@ -97,7 +97,13 @@ class Posts {
           image,
           catId,
         },
-        { withCredentials: true }
+
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       )
       .catch((err) => {
         console.error(err);

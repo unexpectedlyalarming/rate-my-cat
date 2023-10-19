@@ -17,6 +17,7 @@ import AddCat from './components/addCat.jsx'
 import Post from './components/Post.jsx'
 import PostPage from './components/PostPage.jsx'
 import EditProfile from './components/EditProfile.jsx'
+import Facts from './components/Facts.jsx'
 
 const queryClient = new QueryClient();
 
@@ -82,6 +83,10 @@ const router = createBrowserRouter([
       {
         path: "/edit-profile",
         element: <EditProfile />,
+      },
+      {
+        path: "/facts",
+        element: <Facts />,
       }
     ],
   },

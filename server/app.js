@@ -56,6 +56,7 @@ app.use(
     saveUninitialized: true,
   })
 );
+app.use(express.static("public"));
 
 app.use(cookieParser());
 //Routes

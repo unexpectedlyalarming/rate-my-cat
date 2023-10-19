@@ -10,6 +10,21 @@ export default function Login() {
     const [errorMsg, setErrorMsg] = useState(null);
     const navigate = useNavigate();
 
+    async function handleGuest() {
+        try {
+            const guestUser = await Auth.login("guest", "guest");
+            if (guestUser instanceof Error) {
+                setErrorMsg(guestUser.message);
+                throw guestUser;
+            }
+            if (guestUser) {
+                await setUser(guestUser.user);
+            }
+        } catch (err) {
+            throw new Error(err.message);
+        }
+    }
+
     async function handleLogin(e) {
         try {
 
@@ -49,6 +64,9 @@ export default function Login() {
                 <input type="password" name="password" id="password" />
                 <p className={errorMsg ? "error" : "hidden"}>{errorMsg}</p>
                 <button type="submit">Login</button>
+                <button type="button" onClick={handleGuest}>Login as guest</button>
+                <button type="button" onClick={() => navigate('/register')}>Register</button>
+                
             </form>
         </div>
         </>

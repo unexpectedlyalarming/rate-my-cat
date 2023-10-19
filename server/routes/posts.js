@@ -10,6 +10,18 @@ const verifyToken = require("./auth");
 const jwt = require("jsonwebtoken");
 const secretCode = require("../secretCode");
 const mongoose = require("mongoose");
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/images/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+const upload = multer({ storage: storage });
+
 //Get all posts
 router.get("/", async (req, res) => {
   try {
@@ -200,7 +212,7 @@ router.get("/:postId", async (req, res) => {
 
 //Create new post
 
-router.post("/", async (req, res) => {
+router.post("/", upload.single("image"), async (req, res) => {
   try {
     const userId = req.user.id;
     // const userId = req.user.id;
@@ -213,11 +225,19 @@ router.post("/", async (req, res) => {
       return res.status(401).json({ message: "You do not own this cat" });
     }
     const title = req.body.title;
-    const image = req.body.image;
+    let image = req.body.image;
     //Fetch image url and check if it's valid
     const response = await axios.get(image);
     if (response.status !== 200) {
       return res.status(400).json({ message: "Invalid image url" });
+    }
+
+    //If image is a file, put in local storage and store url
+    if (req.file) {
+      image = `${req.protocol}://${req.get("host")}/images/${
+        req.file.filename
+      }`;
+      console.log(image);
     }
 
     const newPost = new Post({
