@@ -5,7 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Reactions from '../services/reactions.service';
 import Posts from '../services/posts.service';
-
+import { useQuery } from '@tanstack/react-query';
 
 import { Link, useParams } from 'react-router-dom';
 import Post from './Post';
@@ -14,14 +14,9 @@ import RatingsContainer from './RatingsContainer';
 
 
 export default function PostPage () {
-    const [post, setPost] = useState(null);
-    const [loading, isLoading] = useState(true);
     const [date, setDate] = useState(null);
 
-
     const { id } = useParams();
-
-
 
     const [reactionCount, setReactionCount] = useState(0);
     const [hasLiked, setHasLiked] = useState(false);
@@ -62,36 +57,42 @@ export default function PostPage () {
 }
     async function setReactions () {
         setReactionCount(post.reactions.length);
+        checkReaction();
     }
-    useEffect(() => {
 
-        async function fetchPost() {
-            try {
-                const post = await Posts.getPostById(id);
-                setPost(post[0]);
-                if (!post) {
-                    throw new Error("Post not found");
-                    
-                }
-                const newDate = formatDistanceToNow(new Date(post[0].date), { addSuffix: true })
-
-                setDate(newDate);
-                setReactions();
-                setTimeout(() => {
-                    
-                    isLoading(false);
-                }, 500)
-            } catch (err) {
+    async function fetchPost() {
+        try {
+            const post = await Posts.getPostById(id);
+            
+            const newPost = post[0];
+            if (!newPost) {
+                return "Error";
+            }
+            const newDate = formatDistanceToNow(new Date(newPost.date), { addSuffix: true })
+            setDate(newDate);
+            await setReactions();
+            return newPost;
+        } catch (err) {
                 console.error(err);
-                isLoading(false)
             }
         }
-        fetchPost()
-        
-    }, [id])
+
+        const { 
+            data: post, 
+            status,
+        } = useQuery({
+            queryKey: ["post"],
+            queryFn: fetchPost,
+            refetchInterval: 5000,
+        });
 
 
-    if (loading) {
+
+
+    if (status === "loading") {
+        return <div className="loading-container"><CircularProgress /></div>
+    }
+    if (status === "error") {
         return <div className="loading-container"><CircularProgress /></div>
     }
 

@@ -50,16 +50,7 @@ export default function Post ({ post }) {
 
     }
 }
-
-
-
-
-
-
-
-
-
-
+checkReaction(post._id);
 
         
         return (

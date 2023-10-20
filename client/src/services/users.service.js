@@ -47,13 +47,13 @@ class Users {
       });
   }
 
-  //Update profile image and bio
+  //Update profile image
   updateProfilePicture(image) {
     console.log(image);
     return axios
       .patch(
         SERVER_URL + "/users/profile/image",
-        image,
+        { image },
 
         {
           withCredentials: true,

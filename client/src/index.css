@@ -611,3 +611,10 @@ button.create-post-btn {
   font-style: italic;
   color: #a5a5a5;
 }
+
+.profile-image {
+  object-fit: cover;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 10rem;
+}

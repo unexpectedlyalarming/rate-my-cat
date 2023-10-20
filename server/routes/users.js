@@ -46,8 +46,30 @@ router.get("/profile/:userId", async (req, res) => {
     const user = await User.findById(req.params.userId);
     const cats = await Cat.find({ userId: req.params.userId });
     const ratings = await Rating.find({ userId: req.params.userId });
-    //Posts are stored under catId, so we need to find all posts where catId is in cats array
-    const posts = await Post.find({ catId: { $in: cats } });
+
+    //Fetch posts by catId (all posts are associated with a cat), then populate the reactions array of each
+    const posts = await Post.aggregate([
+      { $match: { catId: { $in: cats.map((cat) => cat._id) } } },
+      {
+        $lookup: {
+          from: "reactions",
+          localField: "_id",
+          foreignField: "postId",
+          as: "reactions",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          catId: 1,
+          title: 1,
+          date: 1,
+          image: 1,
+          reactions: "$reactions",
+        },
+      },
+    ]);
+
     res.status(200).json({ user, cats, ratings, posts });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -58,16 +80,17 @@ router.get("/profile/:userId", async (req, res) => {
 
 router.patch("/profile/image", upload.single("image"), async (req, res) => {
   try {
-    const users = await User.findById(req.user.id);
+    const user = await User.findById(req.user.id);
 
     //Check for profile picture
     if (req.file) {
-      users.image = `${req.protocol}://${req.get("host")}/images/${
+      const imageUrl = `${req.protocol}://${req.get("host")}/images/${
         req.file.filename
       }`;
+      user.image = imageUrl;
     }
-    await users.save();
-    res.status(200).json(users);
+    await user.save();
+    res.status(200).json(user);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

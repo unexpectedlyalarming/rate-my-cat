@@ -5,10 +5,7 @@ const axios = require("axios");
 const Post = require("../models/Post");
 const Cat = require("../models/Cat");
 const User = require("../models/User");
-const Rating = require("../models/Rating");
-const verifyToken = require("./auth");
-const jwt = require("jsonwebtoken");
-const secretCode = require("../secretCode");
+
 const mongoose = require("mongoose");
 const multer = require("multer");
 

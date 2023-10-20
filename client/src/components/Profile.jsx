@@ -54,7 +54,7 @@ export default function Profile () {
     const date = formatDistanceToNow(new Date(profile?.user?.date), { addSuffix: true }) || null;
     
     const catsList = (profile && profile?.cats.length > 0) ? profile?.cats.map(cat => (
-        <Cat cat={cat} key={cat.id}/>
+        <Cat cat={cat} key={cat._id}/>
     )) : <p>No cats yet!</p>;
 
 const postsList = (profile && profile?.posts.length > 0) ? profile?.posts.map(post => (
