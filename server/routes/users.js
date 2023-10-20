@@ -101,7 +101,11 @@ router.patch("/profile/image", upload.single("image"), async (req, res) => {
 router.patch("/profile/bio", async (req, res) => {
   try {
     const users = await User.findById(req.user.id);
+    if (req.body.bio.length > 300) {
+      return res.status(400).json({ message: "Bio cannot be over 300 chars" });
+    }
     if (req.body.bio) users.bio = req.body.bio;
+
     await users.save();
     res.status(200).json(users);
   } catch (err) {

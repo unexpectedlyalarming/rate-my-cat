@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Auth from '../services/auth.service';
-
+import MenuIcon from '@mui/icons-material/Menu';
 import { UserContext } from '../providers/userContext';
 
 export default function Nav() {
@@ -44,11 +44,11 @@ const loggedOut = (
                 <li><Link to="/facts">Cat facts</Link></li>
             </ul>
             <ul className="logged-in">
-                <li><Link to={`/profile/${user?.id?.toString()}`}>Profile</Link></li>
+                <li className="nav-pfp"><img className="profile-image nav-image" src={user.image} alt={user.username}/> <Link to={`/profile/${user?.id?.toString()}`}>Profile</Link></li>
                 <li><button onClick={logout}>Logout</button></li>
                 </ul>
             </nav>
-            <button className="nav-button" onClick={toggleMobileMenu}>Menu</button>
+            <button className="nav-button" onClick={toggleMobileMenu}> <MenuIcon /> </button>
         </div>
     )
 }

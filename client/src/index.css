@@ -181,7 +181,7 @@ nav {
     display: block;
     background-color: #333;
     color: #fff;
-    border: none;
+    border: 3px solid #242424;
     cursor: pointer;
     position: fixed;
     top: 1rem;
@@ -617,4 +617,16 @@ button.create-post-btn {
   width: 5rem;
   height: 5rem;
   border-radius: 10rem;
+}
+
+.profile-image.nav-image {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 10rem;
+}
+.nav-pfp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
 }

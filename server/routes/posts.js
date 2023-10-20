@@ -226,7 +226,6 @@ router.get("/:postId", async (req, res) => {
 
 router.post("/", upload.single("image"), async (req, res) => {
   try {
-    console.log("Made past middleware");
     const userId = req.user.id;
     // const userId = req.user.id;
     const catId = req.body.catId;
@@ -237,7 +236,11 @@ router.post("/", upload.single("image"), async (req, res) => {
     if (!currentCat || currentCat.userId.toString() !== userId) {
       return res.status(401).json({ message: "You do not own this cat" });
     }
+
     const title = req.body.title;
+    if (title.length > 250) {
+      return res.status(400).json({ message: "Title too long" });
+    }
     let image;
     if (req.body.image) {
       image = req.body.image;
@@ -261,7 +264,6 @@ router.post("/", upload.single("image"), async (req, res) => {
       title: title,
       image: image,
     });
-    console.log("New post!" + newPost);
     await newPost.save();
     res.status(200).json({ message: "Post created" });
   } catch (err) {

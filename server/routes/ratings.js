@@ -103,6 +103,12 @@ router.post("/", verifyToken, async (req, res) => {
         .json({ message: "Rating must be between 1 and 10" });
     }
 
+    if (comment.length > 1000) {
+      return res
+        .status(400)
+        .json({ message: "Comment must be less than 1000 characters" });
+    }
+
     const newRating = new Rating({
       userId: userId,
       postId: postId,
@@ -127,14 +133,21 @@ router.patch("/:ratingId", verifyToken, async (req, res) => {
     if (rating.userId !== userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
+
     //Check for rating
     if (req.body.rating) {
       rating.rating = req.body.rating;
     }
     //Check for comment
     if (req.body.comment) {
+      if (comment.length > 1000) {
+        return res
+          .status(400)
+          .json({ message: "Comment must be less than 1000 characters" });
+      }
       rating.comment = req.body.comment;
     }
+
     await Rating.save();
     res.status(200).json(rating);
   } catch (err) {

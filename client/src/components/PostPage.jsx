@@ -35,7 +35,7 @@ export default function PostPage () {
     }
 
     async function handleReact () {
-        checkReaction();
+        await checkReaction();
         if (!hasLiked) {
         const newReaction = await Reactions.createReaction(post._id);
         if (newReaction instanceof Error) {
@@ -56,14 +56,14 @@ export default function PostPage () {
     }
 }
     async function setReactions () {
-        setReactionCount(post.reactions.length);
-        checkReaction();
+        setReactionCount(post?.reactions?.length);
+        await checkReaction();
     }
 
     async function fetchPost() {
         try {
             const post = await Posts.getPostById(id);
-            
+
             const newPost = post[0];
             if (!newPost) {
                 return "Error";

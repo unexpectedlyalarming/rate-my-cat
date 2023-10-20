@@ -31,9 +31,23 @@ router.post("/register", async (req, res) => {
     if (!username || !password) {
       return res.status(400).json({ message: "Please enter all fields" });
     }
+    //Check if username already exists
     const queryUser = await User.findOne({ username: username });
     if (queryUser) {
       return res.status(400).json({ message: "Username already exists" });
+    }
+    //Username must be 5 characters
+    if (username.length < 5) {
+      return res
+        .status(400)
+        .json({ message: "Username must be at least 5 characters" });
+    }
+
+    //Password must be 6 characters
+    if (password.length < 6) {
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 6 characters" });
     }
 
     //Encrypt password
@@ -69,7 +83,7 @@ router.post("/login", async (req, res) => {
         const newUser = {
           username: user.username,
           id: user._id,
-          profilePicture: user.profilePicture,
+          image: user.image,
         };
         const token = await giveToken(newUser);
         //Set token as httponly cookie, expires in 30m

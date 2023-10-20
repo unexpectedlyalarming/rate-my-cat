@@ -3,10 +3,8 @@ const express = require("express");
 const router = express.Router();
 const Cat = require("../models/Cat");
 const User = require("../models/User");
-const verifyToken = require("./auth");
 const Ratings = require("../models/Rating");
 const post = require("../models/Post");
-const jwt = require("jsonwebtoken");
 const multer = require("multer");
 
 const storage = multer.diskStorage({
@@ -66,7 +64,7 @@ router.get("/:catId", async (req, res) => {
 
 //Create new cat
 
-router.post("/", upload.single("image"), async (req, res) => {
+router.post("/", upload.single("image"), checkCatParams, async (req, res) => {
   try {
     const userId = req.user.id;
 
@@ -103,7 +101,7 @@ router.post("/", upload.single("image"), async (req, res) => {
 
 //Update cat
 
-router.patch("/:catId", verifyToken, async (req, res) => {
+router.patch("/:catId", checkCatParams, async (req, res) => {
   try {
     const userId = req.user.id;
     const catId = req.params.catId;
@@ -126,7 +124,7 @@ router.patch("/:catId", verifyToken, async (req, res) => {
 
 //Delete cat
 
-router.delete("/:catId", verifyToken, async (req, res) => {
+router.delete("/:catId", async (req, res) => {
   try {
     const userId = req.user.id;
     const catId = req.params.catId;
@@ -181,5 +179,21 @@ router.get("/breed/:filter", async (req, res) => {
 });
 
 router.use("/:catId/followers", followerRouter);
+
+async function checkCatParams(req, res, next) {
+  if (req.body.name.length > 60) {
+    return res.status(400).json({ message: "Name too long" });
+  }
+  if (req.body.breed.length > 60) {
+    return res.status(400).json({ message: "Breed too long" });
+  }
+  if (req.body.color.length > 30) {
+    return res.status(400).json({ message: "Color too long" });
+  }
+  if (req.body.age.length > 2 || req.body.age < 0) {
+    return res.status(400).json({ message: "Age invalid" });
+  }
+  next();
+}
 
 module.exports = router;
