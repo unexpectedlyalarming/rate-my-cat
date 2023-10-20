@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Auth from '../services/auth.service';
 import MenuIcon from '@mui/icons-material/Menu';
 import { UserContext } from '../providers/userContext';
-
+import HomeIcon from '@mui/icons-material/Home';
 export default function Nav() {
     const navigate = useNavigate();
 
@@ -38,7 +38,7 @@ const loggedOut = (
         <div className={`nav-container ${mobileMenu ? 'active' : ''}`}>
         <nav className="nav">
             <ul>
-                <li><Link to="/">Home</Link></li>
+                <li><Link to="/"><HomeIcon /></Link></li>
                 <li><Link to="/cats">Cats</Link></li>
                 <li><Link to="/leaderboard">Leaderboard</Link></li>
                 <li><Link to="/facts">Cat facts</Link></li>

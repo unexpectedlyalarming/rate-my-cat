@@ -102,7 +102,7 @@ router.patch("/profile/bio", async (req, res) => {
   try {
     const users = await User.findById(req.user.id);
     if (req.body.bio.length > 300) {
-      return res.status(400).json({ message: "Bio cannot be over 300 chars" });
+      return res.status(400).json({ message: "Bio cannot be over 00 chars" });
     }
     if (req.body.bio) users.bio = req.body.bio;
 

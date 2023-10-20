@@ -10,7 +10,7 @@ import { formatDistanceToNow } from 'date-fns';
 import Post from './Post';
 import Cat from './Cat';
 import { CircularProgress } from '@mui/material';
-
+import RatingComponent from './RatingComponent';
 
 //TODO: Send back array of cats and posts with user info
 export default function Profile () {
@@ -58,8 +58,12 @@ export default function Profile () {
     )) : <p>No cats yet!</p>;
 
 const postsList = (profile && profile?.posts.length > 0) ? profile?.posts.map(post => (
-    <Post post={post} key={post.id}/>
+    <div className="profile-post" key={post.id}><Post post={post} /></div>
 )) : <p>No posts yet!</p>;
+
+const ratingsList = (profile && profile?.ratings.length > 0) ? profile?.ratings.map(rating => (
+    <Link key={rating._id} to={`/post/${rating.postId}`}><RatingComponent rating={rating} ></RatingComponent></Link>
+)) : <p>No ratings yet!</p>;
 
 const isUsersProfile = (profile?.user?._id === user.id) ? true : false;
 
@@ -83,6 +87,11 @@ const isUsersProfile = (profile?.user?._id === user.id) ? true : false;
                 <h2>Posts</h2>
                 <div className="profile-posts"> 
                     {postsList}
+                
+                </div>
+                <h2>Ratings</h2>
+                <div className="profile-ratings"> 
+                    {ratingsList}
                 
                 </div>
 

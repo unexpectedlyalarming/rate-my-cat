@@ -4,7 +4,7 @@ import Posts from './services/posts.service'
 import CreatePost from './components/CreatePost'
 import { CircularProgress } from '@mui/material';
 import { useState } from 'react';
-
+import SortIcon from '@mui/icons-material/Sort';
 
 function App() {
 
@@ -79,7 +79,7 @@ if (status === "error") return <p className="error">An error has occured fetchin
         <option value="most">Most Ratings</option>
         <option value="top-day">Top of day</option>
       </select>
-        <button type="submit" >Filter</button>
+        <button type="submit" ><SortIcon /></button>
         </form>
         </div>
         <div className="posts-container">

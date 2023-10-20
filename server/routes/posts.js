@@ -30,6 +30,11 @@ router.get("/", async (req, res) => {
           foreignField: "_id",
           as: "cat",
         },
+      },
+      {
+        $unwind: "$cat",
+      },
+      {
         $lookup: {
           from: "ratings",
           localField: "_id",
@@ -45,7 +50,6 @@ router.get("/", async (req, res) => {
           as: "reactions",
         },
       },
-
       {
         $project: {
           catName: "$cat.name",
@@ -80,6 +84,11 @@ router.get("/ratings", async (req, res) => {
           foreignField: "_id",
           as: "cat",
         },
+      },
+      {
+        $unwind: "$cat",
+      },
+      {
         $lookup: {
           from: "ratings",
           localField: "_id",
