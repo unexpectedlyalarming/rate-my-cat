@@ -14,4 +14,7 @@ Some features include:
 
 # Roadmap/future features
 
-In the future, some plans include linking to adoption agencies, a proper friend system, daily stories.
+- Friend system
+- Daily stories
+- Games and token system
+- Daily challenges
