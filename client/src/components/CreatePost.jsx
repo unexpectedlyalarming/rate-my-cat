@@ -99,7 +99,7 @@ export default function CreatePost({ handleHidden }) {
             </select>
             <input type="file" name="imageUpload" id="imageUpload" className={toggleImageType === "url" ? "hidden" : "" }/>
             <input type="text" name="imageURL" id="imageURL"  className={toggleImageType === "upload" ? "hidden" : "" } />
-            <button type="submit" disabled={alert}  >Create post</button>
+            <button type="submit">Create post</button>
             </form>
 
         </div>

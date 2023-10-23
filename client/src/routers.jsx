@@ -45,6 +45,9 @@ useEffect(() => {
       if (user !== null) {
         setUser(user);
       }
+      if (user === null) {
+        setUser(null);
+      }
       setLoading(false);
     } catch (err) {
       console.error(err);

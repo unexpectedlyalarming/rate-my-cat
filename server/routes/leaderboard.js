@@ -24,47 +24,54 @@ router.get("/cats/:dateRange", async (req, res) => {
     // Create the pipeline
     //In retrospect, I should've had a ref to ratings in the cat model.
     //This would've made this query much easier, but I'm too lazy to change it now.
+    //Get top cats by average rating for a specific date range, weigh by number of ratings
 
-    const topCats = await Cat.aggregate([
+    const topCats = Cats.aggregate([
       {
-        $lookup: {
-          from: "posts",
-          localField: "_id",
-          foreignField: "catId",
-          as: "catPosts",
+        $match: {
+          createdAt: { $gte: startDate },
         },
-      },
-      {
-        $unwind: "$catPosts",
       },
       {
         $lookup: {
           from: "ratings",
-          localField: "catPosts._id",
-          foreignField: "postId",
-          as: "ratingDetails",
+          localField: "_id",
+          foreignField: "cat",
+          as: "ratings",
         },
       },
       {
-        $unwind: "$ratingDetails",
-      },
-      {
-        $match: {
-          "ratingDetails.date": { $gte: new Date(startDate) },
-        },
+        $unwind: "$ratings",
       },
       {
         $group: {
           _id: "$_id",
           name: { $first: "$name" },
-          averageRating: { $avg: "$ratingDetails.rating" },
+          image: { $first: "$image" },
+          ratings: { $push: "$ratings" },
         },
       },
       {
-        $sort: { averageRating: -1 },
+        $project: {
+          _id: 1,
+          name: 1,
+          image: 1,
+          averageRating: {
+            $avg: "$ratings.rating",
+          },
+          numRatings: {
+            $size: "$ratings",
+          },
+        },
       },
       {
-        $limit: 10, // Make into a variable later?
+        $sort: {
+          averageRating: -1,
+          numRatings: -1,
+        },
+      },
+      {
+        $limit: 10,
       },
     ]);
 

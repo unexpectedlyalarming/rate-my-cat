@@ -61,7 +61,7 @@ class Auth {
         } else return null;
       })
       .catch((err) => {
-        return new Error(err.response.data.message);
+        return null;
       });
   }
 
