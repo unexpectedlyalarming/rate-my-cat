@@ -59,9 +59,9 @@ export default function Login() {
             <h1>Login</h1>
             <form onSubmit={handleLogin} className="form-container">
                 <label htmlFor="username">Username</label>
-                <input type="text" name="username" id="username" />
+                <input placeholder="Username" type="text" name="username" id="username" />
                 <label htmlFor="password">Password</label>
-                <input type="password" name="password" id="password" />
+                <input placeholder="Password" type="password" name="password" id="password" />
                 <p className={errorMsg ? "error" : "hidden"}>{errorMsg}</p>
                 <button type="submit">Login</button>
                 <button type="button" onClick={handleGuest}>Login as guest</button>

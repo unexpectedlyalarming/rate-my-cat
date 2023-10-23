@@ -41,13 +41,15 @@ const loggedOut = (
         <div className={`nav-container ${mobileMenu ? 'active' : ''}`}>
         <nav className="nav">
             <ul>
-            <li><Link to="/"><HomeIcon /></Link></li>
+            <li><Link to="/"><HomeIcon />Home</Link></li>
 
             </ul>
             <ul>
-                <li><Link to="/cats"><PetsIcon/>Cats</Link></li>
+                <li><Link to="/cats">Cats (WIP)</Link></li>
                 <li><Link to="/leaderboard"><LeaderboardIcon />Leaderboard</Link></li>
-                <li><Link to="/facts"><QuestionMarkIcon />Cat facts</Link></li>
+                <li><Link to="/facts"><PetsIcon/>Cat facts</Link></li>
+                <li><Link to="/about"><QuestionMarkIcon />About</Link></li>
+        
             </ul>
             <ul className="logged-in">
                 <li className="nav-pfp"><img className="profile-image nav-image" src={user.image ? user.image : "./img/user-placeholder.png"} alt={user.username}/> <Link to={`/profile/${user?.id?.toString()}`}>Profile</Link></li>

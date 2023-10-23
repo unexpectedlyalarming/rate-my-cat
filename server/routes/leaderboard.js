@@ -26,52 +26,48 @@ router.get("/cats/:dateRange", async (req, res) => {
     //This would've made this query much easier, but I'm too lazy to change it now.
     //Get top cats by average rating for a specific date range, weigh by number of ratings
 
-    const topCats = Cats.aggregate([
+    const topCats = await Cat.aggregate([
       {
-        $match: {
-          createdAt: { $gte: startDate },
+        $lookup: {
+          from: "posts",
+          localField: "_id",
+          foreignField: "catId",
+          as: "catPosts",
         },
+      },
+      {
+        $unwind: "$catPosts",
       },
       {
         $lookup: {
           from: "ratings",
-          localField: "_id",
-          foreignField: "cat",
-          as: "ratings",
+          localField: "catPosts._id",
+          foreignField: "postId",
+          as: "ratingDetails",
         },
       },
       {
-        $unwind: "$ratings",
+        $unwind: "$ratingDetails",
+      },
+      {
+        $match: {
+          "ratingDetails.date": { $gte: new Date(startDate) },
+        },
       },
       {
         $group: {
           _id: "$_id",
           name: { $first: "$name" },
-          image: { $first: "$image" },
-          ratings: { $push: "$ratings" },
+          averageRating: { $avg: "$ratingDetails.rating" },
+          numRatings: { $sum: 1 },
         },
       },
       {
-        $project: {
-          _id: 1,
-          name: 1,
-          image: 1,
-          averageRating: {
-            $avg: "$ratings.rating",
-          },
-          numRatings: {
-            $size: "$ratings",
-          },
-        },
+        $sort: { averageRating: -1 },
+        $sort: { numRatings: -1 },
       },
       {
-        $sort: {
-          averageRating: -1,
-          numRatings: -1,
-        },
-      },
-      {
-        $limit: 10,
+        $limit: 10, // Make into a variable later?
       },
     ]);
 

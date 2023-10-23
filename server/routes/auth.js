@@ -72,7 +72,10 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    const user = await User.findOne({ username: req.body.username });
+    // Find user by username, case insensitive
+    const user = await User.findOne({
+      username: { $regex: new RegExp("^" + req.body.username + "$", "i") },
+    });
     if (!user) return res.status(404).json({ message: "User not found" });
     bcrypt.compare(req.body.password, user.password, async (err, result) => {
       if (err) {

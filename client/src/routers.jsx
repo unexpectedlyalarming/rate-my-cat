@@ -21,6 +21,8 @@ import Auth from './services/auth.service.js'
 import { set } from 'date-fns'
 import { is } from 'date-fns/locale'
 import { CircularProgress } from '@mui/material'
+import About from './components/About.jsx'
+import PageNotFound from './components/404.jsx'
 
 const queryClient = new QueryClient();
 
@@ -115,6 +117,10 @@ const router = createBrowserRouter([
       {
         path: "/facts",
         element: <Facts />,
+      },
+      {
+        path: "/about",
+        element: <About />,
       }
     ],
   },
@@ -132,7 +138,7 @@ const router = createBrowserRouter([
     },
     {
       path: "*",
-      element: <Login />,
+      element: <PageNotFound />,
     },
 ])
 

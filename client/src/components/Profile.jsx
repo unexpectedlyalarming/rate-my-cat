@@ -1,7 +1,7 @@
 //User profile component, includes user info, cat info, and cat rating history
 
 import React, { useContext, useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, QueryCache } from '@tanstack/react-query';
 import { UserContext } from '../providers/userContext';
 import { Link, useParams } from 'react-router-dom';
 import Users from '../services/users.service';
@@ -29,19 +29,27 @@ export default function Profile () {
             console.error(err);
         }
     }
-    
-    
-    
-    
+
+
+
+
+
     const {
         status,
         error,
         data: profile,
+        refetch,
     } = useQuery({
         queryKey: ["profile"],
         queryFn: fetchProfile,
         refetchInterval: 7000,
     });
+
+    useEffect(() => {
+        if (status === "success") {
+          refetch();
+        }
+      }, [id, status, refetch]);
 
     if (status === "loading") {
         return <div className="loading-container"><CircularProgress /></div>

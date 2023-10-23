@@ -45,11 +45,11 @@ export default function Register() {
             <h1>Register</h1>
             <form onSubmit={handleRegister} className="form-container" >
                 <label htmlFor="username">Username</label>
-                <input type="text" name="username" id="username" />
+                <input placeholder="Username" type="text" name="username" id="username" />
                 <label htmlFor="password">Password</label>
-                <input type="password" name="password" id="password" />
+                <input placeholder="Password" type="password" name="password" id="password" />
                 <label htmlFor="confirmPassword">Confirm Password</label>
-                <input type="password" name="confirmPassword" id="confirmPassword" />
+                <input placeholder="Confirm Password" type="password" name="confirmPassword" id="confirmPassword" />
                 <p className={errorMsg ? "error" : "hidden"}>{errorMsg}</p>
 
                 <button type="submit">Register</button>

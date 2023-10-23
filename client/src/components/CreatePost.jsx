@@ -83,7 +83,7 @@ export default function CreatePost({ handleHidden }) {
 
           <form onSubmit={createPost} className={`form-container ${togglePost ? "hidden" : ""}`}>
             <label htmlFor="title">Title</label>
-            <input type="text" name="title" id="title" />
+            <input placeholder="Title" type="text" name="title" id="title" />
             {/* //List cats of user */}
             <label htmlFor="cat">Cat</label>
             <select name="cat" id="cats">
@@ -98,7 +98,7 @@ export default function CreatePost({ handleHidden }) {
               <option value="upload">Upload</option>
             </select>
             <input type="file" name="imageUpload" id="imageUpload" className={toggleImageType === "url" ? "hidden" : "" }/>
-            <input type="text" name="imageURL" id="imageURL"  className={toggleImageType === "upload" ? "hidden" : "" } />
+            <input placeholder="Image URL" type="text" name="imageURL" id="imageURL"  className={toggleImageType === "upload" ? "hidden" : "" } />
             <button type="submit">Create post</button>
             </form>
 
