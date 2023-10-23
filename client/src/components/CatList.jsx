@@ -3,7 +3,6 @@ import Cats from '../services/cats.service';
 import Cat from './Cat';
 import { useQuery } from '@tanstack/react-query';
 import { CircularProgress } from '@mui/material';
-
 export default function CatList() {
 
     async function fetchCats () {
@@ -47,7 +46,7 @@ export default function CatList() {
       )) || [];
     return (
         <div className="container">
-        <h1>CatList</h1>
+        <h1></h1>
         <div className="cats-container">
             {catsList}
         </div>

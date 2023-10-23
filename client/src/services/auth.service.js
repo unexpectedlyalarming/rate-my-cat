@@ -52,6 +52,18 @@ class Auth {
         return new Error(err.response.data.message);
       });
   }
+  validateSession() {
+    return axios
+      .get(SERVER_URL + "/auth/validate-session", { withCredentials: true })
+      .then((response) => {
+        if (response.status === 200) {
+          return response.data;
+        } else return null;
+      })
+      .catch((err) => {
+        return new Error(err.response.data.message);
+      });
+  }
 
   getCurrentUser() {
     return this.currentUser;

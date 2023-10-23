@@ -4,7 +4,7 @@ import './index.css'
 import { Navigate, Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Nav from './components/Nav.jsx'
 import { UserProvider } from './providers/userContext.js'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Login from './components/Login.jsx'
 import Register from './components/Register.jsx'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -14,17 +14,20 @@ import CatProfile from './components/CatProfile.jsx'
 import CatList from './components/CatList.jsx'
 import Leaderboard from './components/Leaderboard.jsx'
 import AddCat from './components/addCat.jsx'
-import Post from './components/Post.jsx'
 import PostPage from './components/PostPage.jsx'
 import EditProfile from './components/EditProfile.jsx'
 import Facts from './components/Facts.jsx'
+import Auth from './services/auth.service.js'
+import { set } from 'date-fns'
+import { is } from 'date-fns/locale'
+import { CircularProgress } from '@mui/material'
 
 const queryClient = new QueryClient();
 
 
 function Routers () {
   const [user, setUser] = useState(null);
-
+  const [loading, setLoading] = useState(true);
   
   const Layout = () => {
     return (
@@ -34,6 +37,28 @@ function Routers () {
     </>
   )
 }
+useEffect(() => {
+
+  async function checkExistingUserSession() {
+    try {
+      const user = await Auth.validateSession();
+      if (user !== null) {
+        setUser(user);
+      }
+      setLoading(false);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  checkExistingUserSession();
+
+
+
+}
+, []);
+
+
+
 
 
 const AuthorizedRoute = ({ children }) => {
@@ -107,6 +132,8 @@ const router = createBrowserRouter([
       element: <Login />,
     },
 ])
+
+if (loading) return <div className="loading-container"><CircularProgress /></div>
 
 return (
   <QueryClientProvider client={queryClient}>
