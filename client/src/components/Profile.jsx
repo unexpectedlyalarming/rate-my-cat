@@ -73,9 +73,9 @@ const isUsersProfile = (profile?.user?._id === user.id) ? true : false;
             <div className="profile-header">
                 <img src={profile?.user?.image ? profile.user.image : "./img/user-placeholder.png"} alt={profile.user.username} className="profile-image" />
                 <h2>{profile?.user?.username}</h2>
-                <p className="profile-date">Joined {date}</p>
-                <p className="profile-bio">{profile?.user?.bio}</p>
+                <p className={profile?.user?.bio ? "profile-bio" : "hidden"}>{profile?.user?.bio}</p>
                 <p className="profile-ratings">Total ratings: {profile?.ratings?.length}</p>
+                <time className="profile-date">Joined {date}</time>
                 {isUsersProfile && <div className="edit-profile"><Link to="/edit-profile">Edit profile</Link></div>}
                 </div>
                 <h2>Cats</h2>

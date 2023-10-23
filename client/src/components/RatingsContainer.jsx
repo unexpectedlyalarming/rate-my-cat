@@ -42,7 +42,10 @@ const RatingsContainer = ({id}) => {
     return (
         <>
             <CreateRating id={id}/>
+            <div className="ratings-container">
+
             {ratingsList}
+            </div>
 
         </>
     );

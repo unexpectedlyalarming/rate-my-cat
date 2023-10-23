@@ -100,7 +100,7 @@ export default function PostPage () {
     return (
         <div className="container">
 
-        <div className="post-container">
+        <div className="post-container single-post">
             <div className="post-header">
                 <h2 to={`/post/${post._id}`} className="post-title">{post.title}</h2>
                 <Link to={`/cat/${post.catId}`}className="post-cat">{post.catName}</Link>
