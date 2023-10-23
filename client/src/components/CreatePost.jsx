@@ -3,23 +3,19 @@ import Posts from '../services/posts.service';
 import { UserContext } from '../providers/userContext';
 import Cats from '../services/cats.service';
 import { CircularProgress, Alert } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
-export default function CreatePost({toggleFilter}) {
+export default function CreatePost() {
+
+    const navigate = useNavigate();
+
     const [togglePost, setTogglePost] = useState(true);
     const [toggleImageType, setToggleImageType] = useState("url");
     const {user} = useContext(UserContext);
     const [cats, setCats] = useState(null);
 
     const [isLoading, setIsLoading] = useState(true);
-    const [alert, setAlert ] = useState(false);
 
-    async function toggleAlert () {
-      setAlert(true);
-      setTimeout(() => {
-          setAlert(false);
-      }, 5000);
-
-    }
 
 
     //Fetch cats of user
@@ -42,7 +38,6 @@ export default function CreatePost({toggleFilter}) {
   
     function toggleCreate () {
       setTogglePost(!togglePost)
-      toggleFilter();
     }
 
     async function createPost (e) {
@@ -59,6 +54,7 @@ export default function CreatePost({toggleFilter}) {
           console.log(createdPost);
           e.target.reset();
           toggleCreate();
+          navigate(`/post/${createdPost._id}`);
         } else {
           throw new Error("Post not created");
         }

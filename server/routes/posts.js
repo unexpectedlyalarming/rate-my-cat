@@ -53,6 +53,7 @@ router.get("/", async (req, res) => {
       {
         $project: {
           catName: "$cat.name",
+          userId: "$cat.userId",
           title: 1,
           image: 1,
           catId: 1,
@@ -103,7 +104,7 @@ router.get("/ratings", async (req, res) => {
           image: 1,
           catId: 1,
           date: 1,
-          reactions: 1,
+          reactions: "$reactions",
           ratings: "$ratings.rating",
           numRatings: { $size: "$ratings" },
         },
@@ -139,15 +140,24 @@ router.get("/top/day", async (req, res) => {
           foreignField: "_id",
           as: "cat",
         },
+
+        $lookup: {
+          from: "reactions",
+          localField: "_id",
+          foreignField: "postId",
+          as: "reactions",
+        },
       },
 
       {
         $project: {
           catName: "$cat.name",
+
           title: 1,
           image: 1,
           catId: 1,
           date: 1,
+          reactions: "$reactions",
           ratings: 1,
         },
       },
@@ -274,7 +284,7 @@ router.post("/", upload.single("image"), async (req, res) => {
       image: image,
     });
     await newPost.save();
-    res.status(200).json({ message: "Post created" });
+    res.status(200).json(newPost);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

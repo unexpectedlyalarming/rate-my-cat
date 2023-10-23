@@ -6,7 +6,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { Alert, CircularProgress, Rating } from '@mui/material';
 import Ratings from '../services/ratings.service';
 import { Link } from 'react-router-dom';
-
+import DeleteIcon from '@mui/icons-material/Delete';
 export default function RatingComponent ({ rating }) {
     const { user } = useContext(UserContext);
     const [alert, setAlert] = useState(false);
@@ -51,7 +51,7 @@ export default function RatingComponent ({ rating }) {
                 <time className="rating-date">Posted {date}</time>
             </div>
             <p className="rating-body">{rating.comment}</p>
-            {user?.id === rating.userId ? <button className="delete-rating" onClick={handleDelete}>Delete</button> : null}
+            {user?.id === rating.userId ? <button className="delete-rating" onClick={handleDelete}><DeleteIcon /></button> : null}
             <Alert severity="success" className={`alert ${alert ? "" : "hidden"}`}>Rating deleted!</Alert>
 
         </div>

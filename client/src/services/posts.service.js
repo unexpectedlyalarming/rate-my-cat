@@ -105,6 +105,10 @@ class Posts {
           },
         }
       )
+      .then((response) => {
+        this.post = response.data;
+        return response.data;
+      })
       .catch((err) => {
         console.error(err);
       });

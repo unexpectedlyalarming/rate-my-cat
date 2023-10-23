@@ -1,10 +1,11 @@
-import { useQuery } from '@tanstack/react-query'
+import { QueryCache, useMutation, useQuery } from '@tanstack/react-query'
 import Post from './components/Post'
 import Posts from './services/posts.service'
 import CreatePost from './components/CreatePost'
 import { CircularProgress } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SortIcon from '@mui/icons-material/Sort';
+import { set } from 'date-fns';
 
 function App() {
 
@@ -27,43 +28,46 @@ function App() {
 
     return posts;
   }
-  async function filterPosts(e) {
-    try {
 
-      e.preventDefault();
-      setFilter(e.target.filter.value);
-      await refetch();
-    } catch (error) {
-      console.error(error);
-    }
+  const { mutate: changeFilter } = useMutation(setFilter, {
+    onSettled: () => {
+      QueryCache.setQueryData(["posts", filter], posts);
+    },
+  });
+
+
+  
+  function handleFilterChange(e) {
+    const newFilter = e.target.value;
+    changeFilter(newFilter);
   }
 
-  async function toggleFilter () {
-    setIsHidden(!isHidden);
-
-  }
-
-
-
-
+  
+  
+  
   const {
     status,
     data: posts,
     refetch,
-} = useQuery({
+  } = useQuery({
     queryKey: ["posts"],
     queryFn: fetchPosts,
-    refetchInterval: 2000,
-});
-
-const postsList = posts?.map((post) => (
-  <Post post={post} key={post._id}/>
-)) || [];
-
+    refetchInterval: 4000,
+  });
+  
+  useEffect(() => {
+     if (status === "success") {
+       refetch();
+     }
+   }, [filter, status, refetch]);
+  
 if (status === "loading") return <div className="loading-container"><CircularProgress /></div>
 
 if (status === "error") return <p className="error">An error has occured fetching posts.</p>
 
+const postsList = posts?.map((post) => (
+  <Post post={post} key={post._id}/>
+)) || [];
 
 
   return (
@@ -72,14 +76,13 @@ if (status === "error") return <p className="error">An error has occured fetchin
       <div className="container">
         <div className="app-header">
 
-        <CreatePost toggleFilter={toggleFilter}/>  
-        <form className={isHidden ? "hidden" : "filter-form"} onSubmit={filterPosts}>
-      <select name="filter" id="filter">
+        <CreatePost />  
+        <form className={isHidden ? "hidden" : "filter-form"} >
+      <select name="filter" id="filter" onChange={handleFilterChange}>
         <option value="recent">Recent</option>
         <option value="most">Most Ratings</option>
         <option value="top-day">Top of day</option>
       </select>
-        <button type="submit" ><SortIcon /></button>
         </form>
         </div>
         <div className="posts-container">

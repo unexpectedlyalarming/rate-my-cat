@@ -7,7 +7,12 @@ import { useNavigate } from 'react-router-dom';
 import CommentIcon from '@mui/icons-material/Comment';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Reactions from '../services/reactions.service';
+import { useContext } from 'react';
+import { UserContext } from '../providers/userContext';
+import DeleteIcon from '@mui/icons-material/Delete';
 export default function Post ({ post }) {
+
+    const { user } = useContext(UserContext);
 
     const navigate = useNavigate();
     const [reactionCount, setReactionCount] = useState(post.reactions.length);
@@ -52,6 +57,21 @@ export default function Post ({ post }) {
 }
 checkReaction(post._id);
 
+    async function handleDelete(e) {
+        e.preventDefault();
+        try {
+            const deletedPost = await Posts.deletePost(post._id);
+            if (deletedPost) {
+                navigate("/");
+            } else {
+                throw new Error("Post not deleted");
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+
         
         return (
             
@@ -65,8 +85,8 @@ checkReaction(post._id);
                 <img src={post.image} alt={post.title} />
             </Link>
             <div className="post-footer">
-                <Link to={`/post/${post._id}`}   ><p>{post.ratings ? post?.ratings?.length : "0"}</p> <CommentIcon /> </Link>
-
+                <Link to={`/post/${post._id}`}><p>{post.ratings ? post?.ratings?.length : "0"}</p> <CommentIcon /> </Link>
+                {post?.userId === user?.id ? <button className="delete-post" onClick={handleDelete}><DeleteIcon /></button> : null}
                 <button className="favorite-button" onClick={handleReact}>
                     {reactionCount}
                     <FavoriteIcon className={hasLiked ? "liked" : "not-liked"}/>
