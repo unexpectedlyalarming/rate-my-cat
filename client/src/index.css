@@ -91,6 +91,13 @@ button:hover {
 button:focus,button:focus-visible {
 	outline: 4px auto -webkit-focus-ring-color;
 }
+select {
+
+	background-color: var(--background);
+	border: 2px solid black;
+	border-radius: 8px;
+	padding: .5rem;
+}
 .hidden {
 	display: none !important;
 }
@@ -247,6 +254,7 @@ footer ul {
 	background-color: var(--background-secondary);
 	padding: 2rem;
 	border-radius: 10px;
+
 }
 .form-container label {
 	font-size: 1.2rem;
@@ -625,11 +633,7 @@ time {
 	border-radius: 10px;
   flex-wrap: wrap;
 }
-.filter-form button {
-	padding-top: .5rem;
-	padding-bottom: .5rem;
-	font-size: 1rem;
-}
+
 .filter-select {
 	border: none;
 	background-color: var(--background-secondary);
@@ -637,18 +641,18 @@ time {
 	font-size: 1rem;
 	font-weight: 500;
 }
-.filter-form button {
+.filter-form button, button.image-type {
   border: none;
   background-color: var(--background);
   border-radius: 20px;
   color: var(--text-secondary);
-  
-
+  padding-top: .5rem;
+  padding-bottom: .5rem;
   font-size: 1rem;
   font-weight: 900;
   transition: .3s;
 }
-.filter-form button.active {
+.filter-form button.active, button.image-type.active {
   color: var(--text);
 
   text-shadow: 0 0 20px #888888;

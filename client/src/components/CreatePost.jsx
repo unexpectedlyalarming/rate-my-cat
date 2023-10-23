@@ -93,10 +93,20 @@ export default function CreatePost({ handleHidden }) {
  
             <label htmlFor="image">Image</label>
             {/* Selector to choose image upload or URL */}
-            <select name="imageSelect" id="image" onChange={handleSelectionType}>
-              <option value="url">URL</option>
-              <option value="upload">Upload</option>
-            </select>
+            <button
+      className={toggleImageType === "url" ? "image-type active" : "image-type"}
+      onClick={() => setToggleImageType("url")}
+
+    >
+      URL
+    </button>
+    <button
+      className={toggleImageType === "upload" ? "image-type active" : "image-type"}
+      onClick={() => setToggleImageType("upload")}
+    >
+      Upload
+    </button>
+
             <input type="file" name="imageUpload" id="imageUpload" className={toggleImageType === "url" ? "hidden" : "" }/>
             <input placeholder="Image URL" type="text" name="imageURL" id="imageURL"  className={toggleImageType === "upload" ? "hidden" : "" } />
             <button type="submit">Create post</button>
