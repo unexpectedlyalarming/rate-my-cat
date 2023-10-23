@@ -125,15 +125,18 @@ router.get("/logout", async (req, res) => {
 
 router.get("/validate-session", async (req, res) => {
   try {
-    const token = req.cookies.accessToken;
+    const token = req.cookies?.accessToken;
     if (!token) {
-      return res.status(401);
+      console.log("no token");
+      return res.status(401).json();
     }
     const decoded = jwt.verify(token, jwtKey);
-    const user = decoded.user;
+
+    const user = decoded?.user;
     if (!user) {
-      return res.status(401);
+      return res.status(401).json();
     }
+
     return res.status(200).json(user);
   } catch (err) {
     res.status(400).json({ message: err.message });
