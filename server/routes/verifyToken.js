@@ -22,6 +22,21 @@ function verifyToken(req, res, next) {
 
     req.user = decoded.user;
 
+    //If token is about to expire, reissue it
+
+    const now = Date.now().valueOf() / 1000;
+
+    if (decoded.exp - now < 30) {
+      const newToken = jwt.sign({ user: decoded.user }, jwtKey, {
+        algorithm: "HS256",
+        expiresIn: 60 * 30,
+      });
+      res.cookie("accessToken", newToken, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 30,
+      });
+    }
+
     // Token is valid, continue processing the request
     next();
   });
