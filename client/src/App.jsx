@@ -37,12 +37,16 @@ function App() {
 
 
   
-  function handleFilterChange(e) {
-    const newFilter = e.target.value;
+  function handleFilterChange(value) {
+    const newFilter = value;
     changeFilter(newFilter);
   }
 
-  
+
+
+  function handleHidden() {
+    setIsHidden(!isHidden);
+  }
   
   
   const {
@@ -76,14 +80,30 @@ const postsList = posts?.map((post) => (
       <div className="container">
         <div className="app-header">
 
-        <CreatePost />  
-        <form className={isHidden ? "hidden" : "filter-form"} >
-      <select name="filter" id="filter" onChange={handleFilterChange}>
-        <option value="recent">Recent</option>
-        <option value="most">Most Ratings</option>
-        <option value="top-day">Top of day</option>
-      </select>
-        </form>
+        <CreatePost handleHidden={handleHidden}/>  
+
+          <div className={isHidden ? "hidden" : "filter-form"}>
+          <SortIcon className="sort-icon"/>
+    <button
+      className={filter === "recent" ? "active" : ""}
+      onClick={() => handleFilterChange("recent")}
+
+    >
+      Recent
+    </button>
+    <button
+      className={filter === "most" ? "active" : ""}
+      onClick={() => handleFilterChange("most")}
+    >
+      Most Ratings
+    </button>
+    <button
+      className={filter === "top-day" ? "active" : ""}
+      onClick={() => handleFilterChange("top-day")}
+    >
+      Top of day
+    </button>
+  </div>
         </div>
         <div className="posts-container">
         {postsList}

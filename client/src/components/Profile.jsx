@@ -58,7 +58,7 @@ export default function Profile () {
     )) : <p>No cats yet!</p>;
 
 const postsList = (profile && profile?.posts.length > 0) ? profile?.posts.map(post => (
-    <div className="profile-post" key={post.id}><Post post={post} /></div>
+    <div className="profile-post" key={post.id}><Post post={post} key={post.id}/></div>
 )) : <p>No posts yet!</p>;
 
 const ratingsList = (profile && profile?.ratings.length > 0) ? profile?.ratings.map(rating => (
@@ -71,7 +71,7 @@ const isUsersProfile = (profile?.user?._id === user.id) ? true : false;
     return (
         <div className="container profile-container">
             <div className="profile-header">
-                <img src={profile?.user?.image} alt="profile" className="profile-image"/>
+                <img src={profile?.user?.image ? profile.user.image : "./img/user-placeholder.png"} alt={profile.user.username} className="profile-image" />
                 <h2>{profile?.user?.username}</h2>
                 <p className="profile-date">Joined {date}</p>
                 <p className="profile-bio">{profile?.user?.bio}</p>

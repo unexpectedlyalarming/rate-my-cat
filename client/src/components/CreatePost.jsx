@@ -5,7 +5,7 @@ import Cats from '../services/cats.service';
 import { CircularProgress, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-export default function CreatePost() {
+export default function CreatePost({ handleHidden }) {
 
     const navigate = useNavigate();
 
@@ -38,6 +38,7 @@ export default function CreatePost() {
   
     function toggleCreate () {
       setTogglePost(!togglePost)
+      handleHidden();
     }
 
     async function createPost (e) {
@@ -99,7 +100,6 @@ export default function CreatePost() {
             <input type="file" name="imageUpload" id="imageUpload" className={toggleImageType === "url" ? "hidden" : "" }/>
             <input type="text" name="imageURL" id="imageURL"  className={toggleImageType === "upload" ? "hidden" : "" } />
             <button type="submit" disabled={alert}  >Create post</button>
-            <Alert severity="success" className={`alert ${alert ? "" : "hidden"}`}>Post created!</Alert>
             </form>
 
         </div>

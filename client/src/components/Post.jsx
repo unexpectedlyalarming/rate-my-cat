@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import Posts from '../services/posts.service';
 import { Link } from 'react-router-dom';
@@ -55,6 +54,7 @@ export default function Post ({ post }) {
 
     }
 }
+
 checkReaction(post._id);
 
     async function handleDelete(e) {
@@ -77,10 +77,10 @@ checkReaction(post._id);
             
             <div className="post-container">
             <div className="post-header">
-                <Link to={`/post/${post._id}`} className="post-title">{post.title}</Link>
                 <Link to={`/cat/${post.catId}`}className="post-cat">{post.catName}</Link>
                 <time className="post-date">Posted {date}</time>
             </div>
+                <Link to={`/post/${post._id}`} className="post-title">{post.title}</Link>
             <Link to={`/post/${post._id}` } className="post-body">
                 <img src={post.image} alt={post.title} />
             </Link>
