@@ -84,6 +84,6 @@ app.use("/leaderboard", verifyToken, require("./routes/leaderboard"));
 app.use("/reactions", verifyToken, require("./routes/reactions"));
 
 //Start the server
-app.listen(4005, () => {
+app.listen(4011, () => {
   console.log("Server has started");
 });
