@@ -2,7 +2,7 @@
 	/* Set up color scheme */
 	--primary: #646cff;
   --secondary: #242424;
-  --accent: #646cff;
+  --accent: #d5e54b;
 
   --text: #e9e9e9;
   --text-disabled: #bdbdbd;
@@ -472,6 +472,10 @@ filter: brightness(1.2);
 .comment-icon:hover {
 	/*Glow */
 	filter: drop-shadow(0 0 0.5rem rgb(144, 144, 144));
+	svg {
+		color: var(--accent);
+
+	}
 }
 .not-liked {
 	color: var(--text-disabled);
@@ -507,6 +511,11 @@ button.favorite-button {
 	justify-content: center;
 	align-content: center;
 }
+.leaderboard-container h3 {
+	font-size: 1.5rem;
+	font-weight: 900;
+	color: var(--accent)
+}
 .leaderboard-container ul {
 	list-style: none;
 	text-align: left;
@@ -514,6 +523,14 @@ button.favorite-button {
 .top-day, .top-month, .top-alltime {
 	align-self: start;
 	width: 25vw;
+}
+.leaderboard-title {
+	display: flex;
+	text-align: left;
+	align-items: center;
+	justify-content: flex-start;
+	font-size: 1.5rem;
+	font-weight: 900;
 }
 /* styles for profile module */
 /* Array of cats represented as a grid that can wrap */

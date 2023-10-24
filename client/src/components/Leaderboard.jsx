@@ -25,7 +25,6 @@ export default function Leaderboard () {
     async function fetchLeaderboard () {
         try {
             const leaderboard = await Leaderboards.getFullLeaderboard();
-            console.log(leaderboard)
             return leaderboard;
         } catch (err) {
             console.error(err)
@@ -52,25 +51,25 @@ export default function Leaderboard () {
       }
 
       const topDay = leaderboard.day.length > 0 ? leaderboard?.day?.map((cat, index) => (
-        <li key={cat.id}> 
-        <h3>#{leaderboard.day[cat] + 1}</h3>
-        <h2>{cat.name}</h2>
+        <li key={cat._id}> 
+        <h3>#{index + 1}</h3>
+        <Link className="leaderboard-title" to={`/cat/${cat._id}`}>{cat.name}</Link>
         <p>Average Rating: {cat.averageRating.toFixed(1)}</p>
         </li>
         )) : <li><p>There are no top cats of the day.</p></li>;
 
         const topMonth = leaderboard.month.length > 0 ? leaderboard?.month?.map((cat, index) => (
-            <li key={cat.id}> 
+            <li key={cat._id}> 
             <h3>#{index + 1}</h3>
-            <h2>{cat.name}</h2>
+            <Link className="leaderboard-title" to={`/cat/${cat._id}`}>{cat.name}</Link>
             <p>Average Rating: {cat.averageRating.toFixed(1)}</p>
             </li>
             )) : <li><p>There are no top cats of the month.</p></li>;
 
         const topAllTime = leaderboard.all.length > 0 ? leaderboard?.all?.map((cat, index) => (
-            <li key={cat.id}> 
+            <li key={cat._id}> 
             <h3>#{index + 1}</h3>
-            <h2>{cat.name}</h2>
+            <Link className="leaderboard-title" to={`/cat/${cat._id}`}>{cat.name}</Link>
             <p>Average Rating: {cat.averageRating.toFixed(1)}</p>
             </li>
             )) : <li><p>There are no top cats of all time.</p></li>;

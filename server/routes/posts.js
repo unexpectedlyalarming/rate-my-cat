@@ -142,7 +142,11 @@ router.get("/top/day", async (req, res) => {
           foreignField: "_id",
           as: "cat",
         },
-
+      },
+      {
+        $unwind: "$cat",
+      },
+      {
         $lookup: {
           from: "reactions",
           localField: "_id",
@@ -218,6 +222,11 @@ router.get("/:postId", async (req, res) => {
           foreignField: "_id",
           as: "cat",
         },
+      },
+      {
+        $unwind: "$cat",
+      },
+      {
         $lookup: {
           from: "reactions",
           localField: "_id",
