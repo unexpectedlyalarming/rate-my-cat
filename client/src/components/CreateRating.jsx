@@ -51,9 +51,9 @@ export default function RatingComponent ({ id, handleCreate }) {
                 <form className="rating-form form-container" onSubmit={createRating} >
 
 
-                    <label htmlFor="rating">{`${currentRating} stars (${currentRating * 2}/10)`}</label>
+                    <label htmlFor="rating">{`${currentRating} stars (${currentRating * 2}/10)*`}</label>
                     <Rating name="rating" value={currentRating} precision={0.5} onChange={(event, newValue) => setCurrentRating(newValue)} />
-                    <label htmlFor="comment">Comment</label>
+                    <label htmlFor="comment">Comment*</label>
                     <TextareaAutosize name="comment" id="comment" minRows={3} placeholder="Comment" required></TextareaAutosize>
                     <button type="submit" disabled={alert} >Submit</button>
                     <Alert severity="success" className={`alert ${alert ? "" : "hidden"}`}>Rating created!</Alert>

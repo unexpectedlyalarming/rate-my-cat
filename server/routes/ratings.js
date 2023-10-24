@@ -7,6 +7,7 @@ const User = require("../models/User");
 const verifyToken = require("./auth");
 const Post = require("../models/Post");
 const mongoose = require("mongoose");
+const postLimiter = require("../Utils/RateLimit").postLimiter;
 //Get all ratings
 
 router.get("/", async (req, res) => {
@@ -90,7 +91,7 @@ router.get("/:ratingId", async (req, res) => {
 
 //Create new rating
 
-router.post("/", verifyToken, async (req, res) => {
+router.post("/", verifyToken, postLimiter, async (req, res) => {
   try {
     const userId = req.user.id;
     const postId = req.body.postId;

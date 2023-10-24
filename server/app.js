@@ -48,6 +48,7 @@ app.use(
 app.use(express.static("public"));
 
 app.use(cookieParser());
+
 //Routes
 
 //Register and login routes

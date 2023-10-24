@@ -4,7 +4,7 @@ const Reaction = require("../models/Reaction");
 const Post = require("../models/Post");
 const User = require("../models/User");
 const mongoose = require("mongoose");
-
+const getLimiter = require("../Utils/RateLimit").getLimiter;
 //Get reactions by postId
 
 router.get("/post/:postId", async (req, res, next) => {
@@ -54,7 +54,7 @@ router.get("/user/:userId", async (req, res, next) => {
 
 //Create a reaction
 
-router.post("/", async (req, res, next) => {
+router.post("/", getLimiter, async (req, res, next) => {
   try {
     const userId = req.user.id;
     const postId = req.body.postId;
@@ -73,7 +73,7 @@ router.post("/", async (req, res, next) => {
 
 //Delete a reaction
 
-router.delete("/:postId", async (req, res, next) => {
+router.delete("/:postId", getLimiter, async (req, res, next) => {
   try {
     const userId = req.user.id;
     const postId = req.params.postId;

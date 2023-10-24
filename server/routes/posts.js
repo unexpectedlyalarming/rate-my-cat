@@ -9,6 +9,8 @@ const User = require("../models/User");
 const mongoose = require("mongoose");
 const multer = require("multer");
 
+const postLimiter = require("../Utils/RateLimit").postLimiter;
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "public/images/");
@@ -243,7 +245,7 @@ router.get("/:postId", async (req, res) => {
 
 //Create new post
 
-router.post("/", upload.single("image"), async (req, res) => {
+router.post("/", postLimiter, upload.single("image"), async (req, res) => {
   try {
     const userId = req.user.id;
     // const userId = req.user.id;
@@ -318,7 +320,7 @@ router.delete("/:postId", async (req, res) => {
 
 //Edit post
 
-router.patch("/:postId", async (req, res) => {
+router.patch("/:postId", postLimiter, async (req, res) => {
   //Only allow updating title
 
   try {
