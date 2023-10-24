@@ -111,7 +111,7 @@ const postsList = posts?.map((post) => (
         <div className="posts-container">
         {postsList}
           </div>
-          <h2>Posts</h2>
+
       </div>
 
     </>

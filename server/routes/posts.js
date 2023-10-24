@@ -292,7 +292,7 @@ router.post("/", postLimiter, upload.single("image"), async (req, res) => {
 
     //If image is a file, put in local storage and store url
     if (req.file) {
-      image = `${req.protocol}://${req.get("host")}/images/${
+      image = `https://api.cats.elynch.co/images/${
         req.file.filename
       }`;
       console.log("Received image file");

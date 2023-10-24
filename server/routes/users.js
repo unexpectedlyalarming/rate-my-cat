@@ -84,13 +84,13 @@ router.patch("/profile/image", upload.single("image"), async (req, res) => {
 
     //Check for profile picture
     if (req.file) {
-      const imageUrl = `${req.protocol}://${req.get("host")}/images/${
+      const imageUrl = `https://api.cats.elynch.co/images/${
         req.file.filename
       }`;
       user.image = imageUrl;
     }
     await user.save();
-    res.status(200).json(user);
+    res.status(200).json(user.image);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -107,7 +107,7 @@ router.patch("/profile/bio", async (req, res) => {
     if (req.body.bio) users.bio = req.body.bio;
 
     await users.save();
-    res.status(200).json(users);
+    res.status(200).json(users.bio);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

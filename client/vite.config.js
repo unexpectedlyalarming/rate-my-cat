@@ -8,4 +8,11 @@ export default defineConfig({
     react(),
     qrcode(), // only applies in dev mode
   ],
+  server : {
+    hmr: {
+
+      port: 443,
+      host: 'api.cats.elynch.co',
+    },
+  },
 });

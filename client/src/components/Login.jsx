@@ -12,7 +12,7 @@ export default function Login() {
 
     async function handleGuest() {
         try {
-            const guestUser = await Auth.login("guest", "guest");
+            const guestUser = await Auth.login("guestuser", "guest123");
             if (guestUser instanceof Error) {
                 setErrorMsg(guestUser.message);
                 throw guestUser;

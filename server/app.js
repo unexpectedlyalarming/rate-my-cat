@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 });
 
 //Connect to MongoDB
-mongoose.connect("mongodb://localhost:27017/rate-my-cat", {
+mongoose.connect("mongodb://catadmin:insaneDifficult!93@localhost:27017/rate-my-cat", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -28,7 +28,7 @@ mongoose.connect("mongodb://localhost:27017/rate-my-cat", {
 app.use(express.json());
 app.use(
   cors({
-    origin: "*",
+    origin: "https://cats.elynch.co",
     credentials: true,
 
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
@@ -36,7 +36,6 @@ app.use(
   })
 );
 
-app.options("*", cors());
 
 app.use(
   session({
