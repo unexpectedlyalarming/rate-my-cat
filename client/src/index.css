@@ -425,7 +425,14 @@ input.input-error:focus {
 	}
 
 }
+.post-container {
+	border: 1px solid transparent;
+	transition: .3s;
+}
+.post-container:hover {
+	border: 1px solid var(--text-disabled);
 
+}
 .favorite-button {
 	.not-liked {
 		transition: .3s ease-in;
@@ -434,8 +441,38 @@ input.input-error:focus {
 	.liked {
 		transition: .3s ease-out
 	}
-}
 
+	border: none;
+	transition: .3s;
+}
+.favorite-button:hover {
+	filter: brightness(1.2);
+}
+.delete-post {
+	border: none;
+	transition: .3s;
+	svg {
+		transition: .3s;
+	}
+	}
+
+.delete-post:hover {
+	transition: .3s;
+	svg {
+		transform: scale(1.2);
+		color: var(--error);
+		transition: .3s;
+	
+}
+filter: brightness(1.2);
+}
+.comment-icon svg {
+	transition: .3s;
+}
+.comment-icon:hover {
+	/*Glow */
+	filter: drop-shadow(0 0 0.5rem rgb(144, 144, 144));
+}
 .not-liked {
 	color: var(--text-disabled);
 	transition: .3s;

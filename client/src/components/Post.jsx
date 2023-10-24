@@ -85,7 +85,7 @@ checkReaction(post._id);
                 <img src={post.image} alt={post.title} />
             </Link>
             <div className="post-footer">
-                <Link to={`/post/${post._id}`}><p>{post.ratings ? post?.ratings?.length : "0"}</p> <CommentIcon /> </Link>
+                <Link to={`/post/${post._id}`} className="comment-icon"><CommentIcon /><p>{post.ratings ? post?.ratings?.length : "0"}</p>  </Link>
                 {post?.userId === user?.id ? <button className="delete-post" onClick={handleDelete}><DeleteIcon /></button> : null}
                 <button className="favorite-button" onClick={handleReact}>
                     {reactionCount}
