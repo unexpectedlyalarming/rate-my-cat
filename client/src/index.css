@@ -594,6 +594,36 @@ button.favorite-button {
 	border-radius: 10px;
 
 }
+
+.profile-ratings {
+	/*Grid of ratings that can wrap */
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 1rem;
+	width: 80vw;
+	max-width: 70%;
+	margin: 0 auto;
+	padding: 1rem;
+	justify-items: center;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+}
+.profile-ratings .rating-container {
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+	width: 100%;
+	max-width: 70%;
+	height: 20rem;
+	overflow: hidden;
+	background-color: var(--background-secondary);
+	padding: 2rem;
+	border-radius: 10px;
+}
 /* styles for cat grid */
 .cats-container {
 	display: grid;
@@ -656,7 +686,9 @@ img.cat-img {
 }
 .post-container.single-post {
   border-radius: 10px 10px 0 0;
+  border: none;
 }
+
 .rating-container {
 	display: flex;
 	flex-direction: column;
@@ -668,7 +700,25 @@ img.cat-img {
 	background-color: var(--background-secondary);
 	padding: 2rem;
 	border-radius: 10px;
+
 }
+h1 {
+	padding: 1rem;
+}
+
+textarea {
+	width: 50%;
+	padding: 1rem;
+	border-radius: 10px;
+	border: 1px solid rgb(17, 17, 17);
+	font-size: 1rem;
+	margin-bottom: 1rem;
+	background-color:var(--background);
+}
+textarea:active, textarea:focus {
+	  outline: 1px solid var(--text-disabled);
+}
+
 .rating-header {
 	display: flex;
 	flex-wrap: wrap;
@@ -693,6 +743,9 @@ time {
 	font-size: .8rem;
 	font-weight: 500;
 	font-style: italic;
+}
+.MuiRating-icon svg {
+	color: var(--accent);
 }
 /*Header */
 .app-header {

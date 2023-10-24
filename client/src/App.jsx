@@ -1,4 +1,4 @@
-import { QueryCache, useMutation, useQuery } from '@tanstack/react-query'
+import { QueryClient, useMutation, useQuery } from '@tanstack/react-query'
 import Post from './components/Post'
 import Posts from './services/posts.service'
 import CreatePost from './components/CreatePost'
@@ -6,6 +6,7 @@ import { CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import SortIcon from '@mui/icons-material/Sort';
 import { set } from 'date-fns';
+
 
 function App() {
 
@@ -29,9 +30,11 @@ function App() {
     return posts;
   }
 
+ const queryClient = new QueryClient();
+
   const { mutate: changeFilter } = useMutation(setFilter, {
     onSettled: () => {
-      QueryCache.setQueryData(["posts", filter], posts);
+      queryClient.setQueryData(["posts", filter], posts);
     },
   });
 

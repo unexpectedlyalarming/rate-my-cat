@@ -34,27 +34,7 @@ export default function PostPage () {
         }
     }
 
-//     async function handleReact () {
-//         await checkReaction();
-//         if (!hasLiked) {
-//         const newReaction = await Reactions.createReaction(post._id);
-//         if (newReaction instanceof Error) {
-//             throw newReaction;
-//         } else {
-//             setReactionCount(reactionCount + 1);
-//             setHasLiked(true);
-//         }
-//     } else {
-//         const deletedReaction = await Reactions.deleteReaction(post._id);
-//         if (deletedReaction instanceof Error) {
-//             throw deletedReaction;
-//         } else {
-//             setReactionCount(reactionCount - 1);
-//             setHasLiked(false);
-//         }
 
-//     }
-// }
     async function setReactions () {
         setReactionCount(post?.reactions?.length);
         await checkReaction();

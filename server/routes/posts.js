@@ -100,14 +100,23 @@ router.get("/ratings", async (req, res) => {
         },
       },
       {
+        $lookup: {
+          from: "reactions",
+          localField: "_id",
+          foreignField: "postId",
+          as: "reactions",
+        },
+      },
+      {
         $project: {
           catName: "$cat.name",
+          userId: "$cat.userId",
           title: 1,
           image: 1,
           catId: 1,
           date: 1,
-          reactions: "$reactions",
           ratings: "$ratings.rating",
+          reactions: "$reactions",
           numRatings: { $size: "$ratings" },
         },
       },

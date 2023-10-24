@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Posts from '../services/posts.service';
 import { Link } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
@@ -14,7 +14,7 @@ export default function Post ({ post }) {
     const { user } = useContext(UserContext);
 
     const navigate = useNavigate();
-    const [reactionCount, setReactionCount] = useState(post.reactions.length);
+    const [reactionCount, setReactionCount] = useState(post?.reactions?.length);
     const [hasLiked, setHasLiked] = useState(false);
 
     const date = formatDistanceToNow(new Date(post.date), { addSuffix: true });
@@ -55,7 +55,13 @@ export default function Post ({ post }) {
     }
 }
 
-checkReaction(post._id);
+useEffect(() => {
+    setReactionCount(post?.reactions?.length);
+    checkReaction();
+}
+, [post]);
+
+
 
     async function handleDelete(e) {
         e.preventDefault();
