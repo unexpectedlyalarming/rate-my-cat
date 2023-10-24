@@ -3,7 +3,7 @@ import Auth from '../services/auth.service';
 import Nav from './Nav';
 import { UserContext } from '../providers/userContext';
 import { useNavigate } from 'react-router-dom';
-
+import '../auth.css'
 export default function Login() {
     
     const {user, setUser} = useContext(UserContext);
@@ -53,8 +53,7 @@ export default function Login() {
     }, [user]);
 
     return (
-        <>
-        <Nav/>
+        <div className="auth">
         <div className="container login-container">
             <h1>Login</h1>
             <form onSubmit={handleLogin} className="form-container">
@@ -69,6 +68,6 @@ export default function Login() {
                 
             </form>
         </div>
-        </>
+        </div>
     )
 }

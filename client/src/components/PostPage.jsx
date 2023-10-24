@@ -5,7 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Reactions from '../services/reactions.service';
 import Posts from '../services/posts.service';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, QueryCache } from '@tanstack/react-query';
 
 import { Link, useParams } from 'react-router-dom';
 import Post from './Post';
@@ -34,27 +34,27 @@ export default function PostPage () {
         }
     }
 
-    async function handleReact () {
-        await checkReaction();
-        if (!hasLiked) {
-        const newReaction = await Reactions.createReaction(post._id);
-        if (newReaction instanceof Error) {
-            throw newReaction;
-        } else {
-            setReactionCount(reactionCount + 1);
-            setHasLiked(true);
-        }
-    } else {
-        const deletedReaction = await Reactions.deleteReaction(post._id);
-        if (deletedReaction instanceof Error) {
-            throw deletedReaction;
-        } else {
-            setReactionCount(reactionCount - 1);
-            setHasLiked(false);
-        }
+//     async function handleReact () {
+//         await checkReaction();
+//         if (!hasLiked) {
+//         const newReaction = await Reactions.createReaction(post._id);
+//         if (newReaction instanceof Error) {
+//             throw newReaction;
+//         } else {
+//             setReactionCount(reactionCount + 1);
+//             setHasLiked(true);
+//         }
+//     } else {
+//         const deletedReaction = await Reactions.deleteReaction(post._id);
+//         if (deletedReaction instanceof Error) {
+//             throw deletedReaction;
+//         } else {
+//             setReactionCount(reactionCount - 1);
+//             setHasLiked(false);
+//         }
 
-    }
-}
+//     }
+// }
     async function setReactions () {
         setReactionCount(post?.reactions?.length);
         await checkReaction();
@@ -80,13 +80,34 @@ export default function PostPage () {
         const { 
             data: post, 
             status,
+            refetch,
         } = useQuery({
             queryKey: ["post"],
             queryFn: fetchPost,
             refetchInterval: 5000,
         });
 
+        const reactMutation = useMutation(Reactions.createReaction);
+        const deleteMutation = useMutation(Reactions.deleteReaction);
+      
+        async function handleReact() {
+          if (hasLiked) {
+            await deleteMutation.mutateAsync(post._id);
+            setReactionCount((count) => count - 1);
+            setHasLiked(false);
+          } else {
+            await reactMutation.mutateAsync(post._id);
+            setReactionCount((count) => count + 1);
+            setHasLiked(true);
+          }
+        }
 
+        useEffect(() => {
+            if (post) {
+            setReactionCount(post.reactions.length);
+            checkReaction();
+            }
+        }, [post]);
 
 
     if (status === "loading") {

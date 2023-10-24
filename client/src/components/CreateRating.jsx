@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Ratings from '../services/ratings.service';
 import { TextareaAutosize } from '@mui/material'
 
-export default function RatingComponent ({ id }) {
+export default function RatingComponent ({ id, handleCreate }) {
     const [currentRating, setCurrentRating] = useState(0);
     const [alert, setAlert] = useState(false);
 
@@ -27,8 +27,8 @@ export default function RatingComponent ({ id }) {
             const createdRating = await Ratings.createRating(newRating);
             if (createdRating) {
                 toggleAlert();
-                console.log(createdRating);
                 e.target.reset();
+                handleCreate(createdRating);
 
             } else {
                 throw new Error("Rating not created");

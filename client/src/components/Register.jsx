@@ -2,8 +2,8 @@ import React, { useContext, useState } from 'react';
 import Auth from '../services/auth.service';
 import { UserContext } from '../providers/userContext';
 import Nav from './Nav';
-import { useNavigate } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
+import '../auth.css'
 
 export default function Register() {
     const navigate = useNavigate();
@@ -39,8 +39,8 @@ export default function Register() {
         }
     }
     return (
-        <>
-        <Nav/>
+        <div className="auth">
+
         <div className="container register-container">
             <h1>Register</h1>
             <form onSubmit={handleRegister} className="form-container" >
@@ -53,8 +53,10 @@ export default function Register() {
                 <p className={errorMsg ? "error" : "hidden"}>{errorMsg}</p>
 
                 <button type="submit">Register</button>
+                <button type="button" onClick={() => navigate('/login')}>Login</button>
             </form>
+
         </div>
-        </>
+        </div>
     )
 }

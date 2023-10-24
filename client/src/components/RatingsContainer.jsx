@@ -1,5 +1,5 @@
-import React from 'react';
-import { useQuery } from '@tanstack/react-query'
+import React, { useEffect } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import RatingComponent from './RatingComponent';
 import { CircularProgress } from '@mui/material';
 import Ratings from '../services/ratings.service';
@@ -17,18 +17,55 @@ const RatingsContainer = ({id}) => {
             console.error(err)
         }
     }
-
-
-
+    const queryClient = useQueryClient();
+    
+    
+    
     const {
         status,
-        error,
         data: ratings,
+        refetch,
     } = useQuery({
         queryKey: ["ratings"],
         queryFn: fetchRatings,
         refetchInterval: 7000,
     });
+
+
+    const { mutate: mutateRating } = useMutation((rating) => {
+        const newRating = rating;
+        return newRating;
+    }, {
+        onSuccess: (newRating) => {
+            // handle success
+            queryClient.setQueryData(
+                ["ratings"],
+                (existingRatings) => [...existingRatings, newRating]
+              );
+        },
+        onError: (err) => {
+          console.error(err);
+        },
+      });
+    
+    
+    async function handleCreate(rating) {
+             mutateRating(rating);
+      }
+
+      useEffect(() => {
+        if (status === "success") {
+            refetch();
+      }
+    }
+    , [status, refetch, ratings]);
+
+
+    
+
+
+
+    
 
     
     const ratingsList = ratings?.length > 0 ? ratings?.map((currentRating) => (
@@ -41,7 +78,7 @@ const RatingsContainer = ({id}) => {
 
     return (
         <>
-            <CreateRating id={id}/>
+            <CreateRating id={id} handleCreate={handleCreate}/>
             <div className="ratings-container">
 
             {ratingsList}

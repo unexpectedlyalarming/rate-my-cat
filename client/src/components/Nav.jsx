@@ -26,15 +26,7 @@ export default function Nav() {
 
 
 const loggedOut = (
-    <div className={`nav-container ${mobileMenu ? 'active' : ''}`}>
-        <nav className="nav">
-            <ul className="logged-out">
-                <li><Link to="/login">Login</Link></li>
-                <li><Link to="/register">Register</Link></li>
-            </ul>
-        </nav>
-        <button className="nav-button" onClick={toggleMobileMenu}>Menu</button>
-    </div>
+<></>
     );
         if (!user) return loggedOut;
     return (

@@ -302,19 +302,14 @@ router.delete("/:postId", async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
     //Check if post is owned by user
-    if (currentPost.userId !== userId) {
+    const currentCat = await Cat.findById(currentPost.catId);
+
+    if (!currentCat || currentCat.userId.toString() !== userId.toString()) {
       return res.status(401).json({ message: "Unauthorized" });
     }
+
     //Delete post
     await Post.findByIdAndDelete(postId);
-    //Delete post from user's posts array
-    const user = await User.findById(userId);
-    user.posts = user.posts.filter((post) => post !== postId);
-    await user.save();
-    //Delete post from cat's posts array
-    const cat = await Cat.findById(currentPost.catId);
-    cat.posts = cat.posts.filter((post) => post !== postId);
-    await cat.save();
     res.status(200).json({ message: "Post deleted" });
   } catch (err) {
     res.status(400).json({ message: err.message });
