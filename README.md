@@ -21,3 +21,9 @@ Some features include:
 - Daily stories
 - Games and token system
 - Daily challenges
+
+# Development breakdown
+
+- MERN stack
+- RESTful API backend powered my node, express, and mongodb with custom jwt authentication and fully functioning sessions
+- Frontend powered by react and reactquery, using the assistance of custom utility functions and materialUI for iconography.
