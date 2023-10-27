@@ -115,6 +115,11 @@ const router = createBrowserRouter([
         element: <EditProfile />,
       },
       {
+        path: "/edit-cat/:id",
+        element: <AddCat />,
+
+      },
+      {
         path: "/facts",
         element: <Facts />,
       },
@@ -150,7 +155,7 @@ return (
   <RouterProvider router={router}>
     </RouterProvider>
   </UserProvider>
- <ReactQueryDevtools/> 
+ {/* <ReactQueryDevtools/>  */}
     </QueryClientProvider>
  )
 

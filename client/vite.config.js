@@ -11,8 +11,8 @@ export default defineConfig({
   server : {
     hmr: {
 
-      port: 443,
-      host: 'api.cats.elynch.co',
+      //Disable
+      overlay: false,
     },
   },
 });

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import Cats from "../services/cats.service";
 import { useNavigate } from "react-router-dom";
-
+import { useParams } from "react-router-dom";
 export default function AddCat() {
   const navigate = useNavigate();
   const [type, setType] = useState("url");
   const [errorMsg, setErrorMsg] = useState(null);
 
-
+ const { id } = useParams();
 
   function changeValue(e) {
     if (e.target.value === "url") {
@@ -21,23 +21,62 @@ export default function AddCat() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log("clicked")
+  
     const image = type === "file" ? e.target.imageFile.files[0] : e.target.imageURL.value;
-    console.log(image)
+    let name;
+    let breed;
+    let color;
+    let age;
+    let cat = {};
 
-    const cat = {
-      name: e.target.name.value,
-      breed: e.target.breed.value,
-      color: e.target.color.value,
-      age: e.target.age.value,
-      image: image,
-    };
-    const newCat = await Cats.createCat(cat);
+    if (e.target.name) {
+      name = e.target.name.value;
+      cat.name = name;
+      
+
+    }
+    if (e.target.breed) {
+      breed = e.target.breed.value;
+      cat.breed = breed;
+
+    }
+    if (e.target.color) {
+      color = e.target.color.value;
+      cat.color = color;
+
+    }
+    if (e.target.age) {
+      age = e.target.age.value;
+      cat.age = age;
+
+    }
+    if (image) {
+      cat.image = image;
+
+
+    }
+
+    // const cat = {
+    //   name: e.target.name.value,
+    //   breed: e.target.breed.value,
+    //   color: e.target.color.value,
+    //   age: e.target.age.value,
+    //   image: image,
+    // };
+    let newCat
+    if (id) {
+      newCat = await Cats.updateCat(id, cat);
+      
+    }
+    if (!id) {
+      newCat = await Cats.createCat(cat);
+
+    }
     if (newCat instanceof Error) {
       setErrorMsg(newCat.message);
       throw newCat;
     } else {
-      navigate("/")
+      navigate(`/cat/${id}`);
 
     }
   }

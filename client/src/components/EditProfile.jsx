@@ -1,8 +1,10 @@
 import React from 'react';
 import Users from '../services/users.service';
 import { useNavigate } from 'react-router-dom';
-
+import { useContext } from 'react';
+import { UserContext } from '../providers/userContext';
 export default function EditProfile() {
+    const { user } = useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -14,13 +16,13 @@ export default function EditProfile() {
             if (bio) {
                 const updatedBio = await Users.updateProfileBio(bio);
                 if (updatedBio) {
-                    console.log(updatedBio);
+                    navigate(`/profile/${user._id}`);
                 }
             }
             if (profilePicture) {
                 const updatedProfilePicture = await Users.updateProfilePicture(profilePicture);
                 if (updatedProfilePicture) {
-                    console.log(updatedProfilePicture);
+                    navigate(`/profile/${user._id}`);
                 }
             }
         } catch (err) {

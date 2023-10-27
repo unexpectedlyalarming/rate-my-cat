@@ -73,6 +73,7 @@ class Cats {
       .patch(SERVER_URL + "/cats/" + catId, cat, { withCredentials: true })
       .then((response) => {
         this.cat = response.data;
+        return response.data;
       })
       .catch((err) => {
         console.error(err);

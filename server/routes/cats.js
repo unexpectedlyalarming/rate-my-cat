@@ -3,9 +3,11 @@ const express = require("express");
 const router = express.Router();
 const Cat = require("../models/Cat");
 const User = require("../models/User");
-const Ratings = require("../models/Rating");
-const post = require("../models/Post");
+const Rating = require("../models/Rating");
+const Post = require("../models/Post");
 const multer = require("multer");
+const mongoose = require("mongoose");
+const axios = require("axios");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -35,13 +37,13 @@ router.get("/:catId", async (req, res) => {
   try {
     const cats = await Cat.findById(req.params.catId);
     //Find posts associated with cat
-    const posts = await post.find({ catId: req.params.catId });
+    const posts = await Post.find({ catId: req.params.catId });
     //Find userId username
     const owner = await User.findById(cats.userId);
     const ownerUsername = owner.username;
 
     //Find ratings associated with cat
-    const ratings = await Ratings.find({ catId: req.params.catId });
+    const ratings = await Rating.find({ catId: req.params.catId });
 
     const newCats = {
       name: cats.name,
@@ -78,7 +80,7 @@ router.post("/", upload.single("image"), checkCatParams, async (req, res) => {
       }
     }
     if (req.file) {
-      image = `${req.protocol}://${req.get("host")}/images/${
+      image = `https://api.cats.elynch.co/images/${
         req.file.filename
       }`;
     }
@@ -101,20 +103,35 @@ router.post("/", upload.single("image"), checkCatParams, async (req, res) => {
 
 //Update cat
 
-router.patch("/:catId", checkCatParams, async (req, res) => {
+router.patch("/:catId", checkCatParams, upload.single("image"), async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = new mongoose.Types.ObjectId(req.user.id);
+    console.log(userId)
     const catId = req.params.catId;
     //Check if catId is owned by userid
     const currentCat = await Cat.findById(catId);
-    if (currentCat.userId !== userId) {
+    console.log(currentCat.userId)
+    if (currentCat.userId.toString() !== userId.toString()) {
       return res.status(401).json({ message: "Unauthorized" });
     }
     currentCat.name = req.body.name;
     currentCat.breed = req.body.breed;
     currentCat.age = req.body.age;
     currentCat.bio = req.body.bio;
-    currentCat.image = req.body.image;
+    if (req.body.image) {
+      let image = req.body.image;
+      const response = await axios.get(image);
+      if (response.status !== 200) {
+        return res.status(400).json({ message: "Invalid image url" });
+      }
+      currentCat.image = image;
+    }
+    if (req.file) {
+      let image = `https://api.cats.elynch.co/images/${
+        req.file.filename
+      }`;
+      currentCat.image = image;
+    }
     await currentCat.save();
     res.status(200).json(currentCat);
   } catch (err) {
@@ -126,26 +143,26 @@ router.patch("/:catId", checkCatParams, async (req, res) => {
 
 router.delete("/:catId", async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = new mongoose.Types.ObjectId(req.user.id);
     const catId = req.params.catId;
     //Check if catId is owned by userid
     const currentCat = await Cat.findById(catId);
-    if (currentCat.userId !== userId) {
+    if (currentCat.userId.toString() !== userId.toString()) {
       return res.status(401).json({ message: "Unauthorized" });
     }
     //Delete all ratings associated with cat
     const ratings = await Rating.find({ catId: catId });
     ratings.forEach(async (rating) => {
-      await rating.delete();
+      await Rating.deleteOne({ _id: rating._id });
     });
 
     //Delete all posts associated with cat
-    const posts = await post.find({ catId: catId });
+    const posts = await Post.find({ catId: catId });
     posts.forEach(async (post) => {
-      await post.delete();
+      await Post.deleteOne({ _id: post._id });
     });
     //Delete cat
-    await currentCat.delete();
+    await Cat.deleteOne({ _id: catId });
     res.status(200).json({ message: "Cat deleted" });
   } catch (err) {
     res.status(500).json({ message: err.message });
