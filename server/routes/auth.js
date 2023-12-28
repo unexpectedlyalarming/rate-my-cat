@@ -5,9 +5,9 @@ const router = express.Router();
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const secretCode = require("../secretCode");
 
-const jwtKey = secretCode;
+
+const jwtKey = process.env.SECRET_CODE;
 
 //Function that signs token whenever user is verified, takes in user object
 async function giveToken(user) {

@@ -8,7 +8,22 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
-const secretCode = require("./secretCode");
+
+const dotenv = require("dotenv");
+dotenv.config();
+
+
+
+const PORT = process.env.PORT || 4011;
+const dbUsername = process.env.DB_USERNAME || null;
+const dbPassword = process.env.DB_PASSWORD || null;
+const dbName = process.env.DB_NAME || "rate-my-cat";
+
+const corsOrigin = process.env.CORS_ORIGIN || "https://cats.elynch.co";
+
+const dbURI = dbUsername && dbPassword ? `mongodb://${dbUsername}:${dbPassword}@localhost:27017/${dbName}` : `mongodb://localhost:27017/${dbName}`;
+
+const secretCode = process.env.SECRET_CODE 
 
 app.use(morgan("tiny"));
 
@@ -19,7 +34,7 @@ app.use((req, res, next) => {
 });
 
 //Connect to MongoDB
-mongoose.connect("mongodb://catadmin:insaneDifficult!93@localhost:27017/rate-my-cat", {
+mongoose.connect(dbURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -28,7 +43,7 @@ mongoose.connect("mongodb://catadmin:insaneDifficult!93@localhost:27017/rate-my-
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://cats.elynch.co",
+    origin: corsOrigin,
     credentials: true,
 
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
