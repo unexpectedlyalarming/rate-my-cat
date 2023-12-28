@@ -15,15 +15,26 @@ Some features include:
 - Cat facts ✅
 - and of course the most important feature, cat photos. ✅
 
-# Roadmap/future features
+# Development
 
-- Friend system
-- Daily stories
-- Games and token system
-- Daily challenges
+Written in React for the frontend, Node.JS and mongodb on the backend. To run locally, here are the instructions.
 
-# Development breakdown
+> Prerequisites: Node.JS and NPM, MongoDB community edition
 
-- MERN stack
-- RESTful API backend powered my node, express, and mongodb with custom jwt authentication and fully functioning sessions
-- Frontend powered by react and reactquery, using the assistance of custom utility functions and materialUI for iconography.
+Clone the repo and open 2 terminals.
+
+Go to the server folder and look at the variables in the app.js file. Create a .env file in the directory and customize to your liking.
+
+Terminal 1:
+
+```
+cd client
+npm run dev
+```
+Terminal 2:
+```
+cd server
+npm run dev
+```
+
+Congratulations, rate-my-cat should be running locally.
